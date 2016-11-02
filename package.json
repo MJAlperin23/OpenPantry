@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/MJAlperin23/OpenPantry/issues"
   },
-  "homepage": "https://github.com/MJAlperin23/OpenPantry#readme"
+  "homepage": "https://github.com/MJAlperin23/OpenPantry#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
 }
