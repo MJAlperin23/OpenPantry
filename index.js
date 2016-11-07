@@ -91,21 +91,27 @@ function checkExistingUser(senderID) {
 }
 
 function queryForUser(senderID) {
-	var userID = 0
-	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-	  if (err) {
-	    return console.error('error fetching client from pool', err)
-	  }
-	  client.query('SELECT * FROM messengerusers WHERE id = $1', [senderID])
-			query.on('row', (row) => {
-			 results.push(row)
-		 	})
-
-			query.on('end', () => {
-	      done();
-	      return res.json(results);
-	  })
-	})
+	const results = [];
+   // Get a Postgres client from the connection pool
+   pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+     // Handle connection errors
+     if(err) {
+       done();
+       console.log(err);
+       return res.status(500).json({success: false, data: err});
+     }
+     // SQL Query > Select Data
+     const query = client.query('SELECT * FROM messengerusers WHERE id = $1', [senderID]);
+     // Stream results back one row at a time
+     query.on('row', (row) => {
+       results.push(row);
+     });
+     // After all data is returned, close connection and return results
+     query.on('end', () => {
+       done();
+       return res.json(results);
+     });
+   });
 
 	//console.log("Sender: " + senderID + "User: " + userID)
 }
