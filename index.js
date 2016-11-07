@@ -109,7 +109,7 @@ function queryForUser(senderID) {
      // After all data is returned, close connection and return results
      query.on('end', () => {
        done();
-       return res.json(results);
+       return results;
      });
    });
 
