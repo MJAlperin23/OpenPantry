@@ -100,6 +100,7 @@ function checkExistingUser(senderID) {
 			console.log("Length: "+ result.rows.length)
 			if(result.rows.length > 0){
 					isUser = true
+					console.log("GOT HERE")
 			}
 
 	  })
