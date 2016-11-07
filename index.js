@@ -87,33 +87,27 @@ const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAx
 
 
 function checkExistingUser(senderID) {
+	console.log("JSON: " + queryForUser(senderID))
+}
 
-
+function queryForUser(senderID) {
 	var userID = 0
 	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
 	  if (err) {
 	    return console.error('error fetching client from pool', err)
 	  }
-	  client.query('SELECT * FROM messengerusers WHERE id = $1', [senderID], function (err, result) {
-	    done()
-	    if (err) {
-	      return console.error('error happened during query', err)
-	    }
+	  client.query('SELECT * FROM messengerusers WHERE id = $1', [senderID])
+			query.on('row', (row) => {
+			 results.push(row)
+		 	})
 
-			if(result.rows.length > 0){
-					userID = result.rows[0].id
-			}
-
+			query.on('end', () => {
+	      done();
+	      return res.json(results);
 	  })
 	})
 
-	console.log("Sender: " + senderID + "User: " + userID)
-	if(senderID == userID)
-	{
-		return true
-	} else {
-		return false
-	}
+	//console.log("Sender: " + senderID + "User: " + userID)
 }
 
 function addNewUser(senderID, senderName) {
