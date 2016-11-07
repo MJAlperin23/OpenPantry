@@ -62,7 +62,7 @@ app.post('/webhook/', function (req, res) {
 				continue
 			}
 			//sendTextMessage(sender, "Text received from: " + sender + "   " + text.substring(0, 200))
-			if(!checkExistingUser(sender)) {
+			if(checkExistingUser(sender) == false) {
 				addNewUser(sender, senderName)
 				sendTextMessage(sender, "Welcome to OpenPantry. Your Account Has been Created!", token)
 			}
@@ -97,12 +97,10 @@ function checkExistingUser(senderID) {
 	    }
 
 			if(result.rows.length > 0){
-				if(result.rows.id == senderID) {
 					return true
 				}
 			}
 	  })
-
 	})
 
 	return false
