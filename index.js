@@ -86,7 +86,8 @@ const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAx
 
 function checkExistingUser(senderID) {
 
-	var isUser = false
+
+	var userID = 0
 	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
 	  if (err) {
 	    return console.error('error fetching client from pool', err)
@@ -97,17 +98,19 @@ function checkExistingUser(senderID) {
 	      return console.error('error happened during query', err)
 	    }
 
-			console.log("Length: "+ result.rows.length)
 			if(result.rows.length > 0){
-					isUser = true
-					console.log("GOT HERE")
+					userID = result.rows[0].id
 			}
 
 	  })
 	})
 
-	console.log("isUser: " + isUser)
-	return isUser
+	if(senderID == userID)
+	{
+		return true
+	} else {
+		return false
+	}
 }
 
 function addNewUser(senderID, senderName) {
