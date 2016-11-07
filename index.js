@@ -98,8 +98,8 @@ function checkExistingUser(senderID) {
 
 			if(result.rows.length > 0){
 					return true
-				}
 			}
+
 	  })
 	})
 
