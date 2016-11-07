@@ -86,7 +86,7 @@ const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAx
 
 function checkExistingUser(senderID) {
 
-	pg.connect(conString, function (err, client, done) {
+	pg.connect(process.env.DATABASE_URL, function (err, client) {
 	  if (err) {
 	    return console.error('error fetching client from pool', err)
 	  }
@@ -108,7 +108,7 @@ function checkExistingUser(senderID) {
 }
 
 function addNewUser(senderID, senderName) {
-	pg.connect(conString, function (err, client, done) {
+	pg.connect(process.env.DATABASE_URL, function (err, client) {
 	  if (err) {
 	    return console.error('error fetching client from pool', err)
 	  }
