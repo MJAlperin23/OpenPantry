@@ -95,12 +95,14 @@ function checkExistingUser(senderID) {
 	    if (err) {
 	      return console.error('error happened during query', err)
 	    }
-	  })
-		if(result.rows.length > 0){
-			if(result.rows.id == senderID) {
-				return true
+
+			if(result.rows.length > 0){
+				if(result.rows.id == senderID) {
+					return true
+				}
 			}
-		}
+	  })
+
 	})
 
 	return false
