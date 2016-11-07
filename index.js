@@ -38,6 +38,7 @@ pg.connect(conString, function (err, client, done) {
 // index
 app.get('/', function (req, res) {
 	res.send('hello world i am a secret bot')
+	checkExistingUser(1161553940576727)
 })
 
 // for facebook verification
@@ -90,12 +91,13 @@ function checkExistingUser(senderID) {
 	  if (err) {
 	    return console.error('error fetching client from pool', err)
 	  }
-	  client.query('SELECT * FROM messengerusers WHERE id = $1', [senderID], function (err, result) {
+	  client.query('SELECT * FROM messengerusers WHERE id = 1098890100188873', function (err, result) {
 	    done()
 	    if (err) {
 	      return console.error('error happened during query', err)
 	    }
 
+			console.log("Length: "+ result.rows.length)
 			if(result.rows.length > 0){
 					return true
 			}
