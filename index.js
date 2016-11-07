@@ -107,6 +107,7 @@ function checkExistingUser(senderID) {
 	  })
 	})
 
+	console.log("Sender: " + senderID + "User: " + userID)
 	if(senderID == userID)
 	{
 		return true
