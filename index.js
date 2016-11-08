@@ -38,6 +38,8 @@ pg.connect(conString, function (err, client, done) {
 // index
 app.get('/', function (req, res) {
 	res.send('hello world i am a secret bot')
+		data = checkExistingUser(10001)
+		console.log(data.rows.length)
 })
 
 // for facebook verification
@@ -48,6 +50,38 @@ app.get('/webhook/', function (req, res) {
 	res.send('Error, wrong token')
 })
 
+app.get('/api/', (req, res, next) => {
+
+
+	console.log(data)
+})
+
+
+
+//console.error('error fetching client from pool', err)
+//return console.error('error happened during query', err)
+
+function hello(senderID, callback) {
+	const results = [];
+   // Get a Postgres client from the connection pool
+   //pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+	 var returnLength = 0
+	pg.connect(conString, function (err, client, done) {
+  if (err) {
+    return callback(err, null)
+  }
+	  client.query('SELECT id from messengerusers where id = $1::int', [senderID], function (err, result) {
+	    done()
+	    if (err) {
+	      return callback(err, null)
+	    }
+			return callback(null, result)
+
+	  })
+	})
+	//console.log(returnLength)
+}
+
 // to post data
 app.post('/webhook/', function (req, res) {
 	let messaging_events = req.body.entry[0].messaging
@@ -57,25 +91,8 @@ app.post('/webhook/', function (req, res) {
 		let senderName = event.sender.name
 		if (event.message && event.message.text) {
 			let text = event.message.text
-			if (text === 'Generic') {
-				sendGenericMessage(sender)
-				continue
-			}
-			//sendTextMessage(sender, "Text received from: " + sender + "   " + text.substring(0, 200))
-			var userStatus = checkExistingUser(sender)
-			console.log("Status: " + userStatus)
-			if(userStatus == false) {
-				addNewUser(sender, senderName)
-				sendTextMessage(sender, "Welcome to OpenPantry. Your Account Has been Created!", token)
-			}
 
-			 sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-
-		}
-		if (event.postback) {
-			let text = JSON.stringify(event.postback)
-			sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
-			continue
+			checkExistingUser(sender, text)
 		}
 	}
 	res.sendStatus(200)
@@ -85,47 +102,42 @@ app.post('/webhook/', function (req, res) {
 // const token = process.env.PAGE_ACCESS_TOKEN
 const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAxAwEpyQOTES7t84Vt9b2T4XIKCZAQuMZC58v3edIHN21N1S1HDgr3ZC3yKvicqAJga3HksYNwqaZB13ZCCcC19egH8x1FDuD5dJCJvI9sImuwrAZDZD"
 
-
-function checkExistingUser(senderID) {
-	console.log("JSON: " + queryForUser(senderID))
-}
-
-function queryForUser(senderID) {
+function checkExistingUser(senderID, text) {
 	const results = [];
    // Get a Postgres client from the connection pool
-   pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-     // Handle connection errors
-     if(err) {
-       done();
-       console.log(err);
-       return res.status(500).json({success: false, data: err});
-     }
-     // SQL Query > Select Data
-     const query = client.query('SELECT * FROM messengerusers WHERE id = $1', [senderID]);
-     // Stream results back one row at a time
-     query.on('row', (row) => {
-       results.push(row);
-     });
-     // After all data is returned, close connection and return results
-     query.on('end', () => {
-       done();
-       return results;
-     });
-   });
-
-	//console.log("Sender: " + senderID + "User: " + userID)
-}
-
-function addNewUser(senderID, senderName) {
-	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-	  if (err) {
-	    return console.error('error fetching client from pool', err)
-	  }
-	  client.query('INSERT INTO messengerusers (id, name) VALUES ($1, $2);', [senderID, senderName], function (err, result) {
+   //pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+	 var returnLength = 0
+	pg.connect(conString, function (err, client, done) {
+  if (err) {
+    return console.error('error fetching client from pool', err)
+  }
+	  client.query('SELECT id from messengerusers where id = $1', [senderID], function (err, result) {
 	    done()
 	    if (err) {
 	      return console.error('error happened during query', err)
 	    }
+
+			if(result.rows.length > 0)
+			{
+				sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+			} else {
+				addNewUser(senderID, text)
+			}
+  	})
+	})
+}
+
+function addNewUser(senderID, text) {
+	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+	  if (err) {
+	    return console.error('error fetching client from pool', err)
+	  }
+	  client.query('INSERT INTO messengerusers (id, name) VALUES ($1, $2);', [senderID, 'HI'], function (err, result) {
+	    done()
+	    if (err) {
+	      return console.error('error happened during query', err)
+	    }
+			sendTextMessage(sender, "Welcome to OpenPantry. Your Account Has been Created!")
 	  })
 	})
 }
