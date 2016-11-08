@@ -10,7 +10,6 @@ const app = express()
 const pg = require('pg')
 const conString = 'postgres://Mickey:password@localhost:5432/open_pantry'
 
-
 app.set('port', (process.env.PORT || 5000))
 
 // parse application/x-www-form-urlencoded
@@ -18,22 +17,6 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 // parse application/json
 app.use(bodyParser.json())
-
-/*
-pg.connect(conString, function (err, client, done) {
-  if (err) {
-    return console.error('error fetching client from pool', err)
-  }
-  client.query('SELECT * from messengerusers', function (err, result) {
-    done()
-
-    if (err) {
-      return console.error('error happened during query', err)
-    }
-    console.log(result.rows.length)
-    process.exit(0)
-  })
-})*/
 
 // index
 app.get('/', function (req, res) {
@@ -49,38 +32,6 @@ app.get('/webhook/', function (req, res) {
 	}
 	res.send('Error, wrong token')
 })
-
-app.get('/api/', (req, res, next) => {
-
-
-	console.log(data)
-})
-
-
-
-//console.error('error fetching client from pool', err)
-//return console.error('error happened during query', err)
-
-function hello(senderID, callback) {
-	const results = [];
-   // Get a Postgres client from the connection pool
-   //pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-	 var returnLength = 0
-	pg.connect(conString, function (err, client, done) {
-  if (err) {
-    return callback(err, null)
-  }
-	  client.query('SELECT id from messengerusers where id = $1::int', [senderID], function (err, result) {
-	    done()
-	    if (err) {
-	      return callback(err, null)
-	    }
-			return callback(null, result)
-
-	  })
-	})
-	//console.log(returnLength)
-}
 
 // to post data
 app.post('/webhook/', function (req, res) {
@@ -104,10 +55,8 @@ const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAx
 
 function checkExistingUser(senderID, text) {
 	const results = [];
-   // Get a Postgres client from the connection pool
-   //pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 	 var returnLength = 0
-	pg.connect(conString, function (err, client, done) {
+	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
   if (err) {
     return console.error('error fetching client from pool', err)
   }
