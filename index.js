@@ -68,7 +68,7 @@ function checkExistingUser(senderID, text) {
 
 			if(result.rows.length > 0)
 			{
-				sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+				sendTextMessage(senderID, "Text received, echo: " + text.substring(0, 200))
 			} else {
 				addNewUser(senderID, text)
 			}
@@ -86,7 +86,7 @@ function addNewUser(senderID, text) {
 	    if (err) {
 	      return console.error('error happened during query', err)
 	    }
-			sendTextMessage(sender, "Welcome to OpenPantry. Your Account Has been Created!")
+			sendTextMessage(senderID, "Welcome to OpenPantry. Your Account Has been Created!")
 	  })
 	})
 }
