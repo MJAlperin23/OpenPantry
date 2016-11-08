@@ -21,8 +21,6 @@ app.use(bodyParser.json())
 // index
 app.get('/', function (req, res) {
 	res.send('hello world i am a secret bot')
-		data = checkExistingUser(10001)
-		console.log(data.rows.length)
 })
 
 // for facebook verification
