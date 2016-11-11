@@ -8,8 +8,7 @@ CREATE TABLE MessengerUsers (
 CREATE TABLE PantryItems (
   id serial PRIMARY KEY,
   user_id bigint REFERENCES messengerusers(id),
-  item_name VARCHAR(60),
-  quantity int
+  item_name VARCHAR(60)
 );
 
 /*
