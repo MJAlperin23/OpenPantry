@@ -1,15 +1,51 @@
 // code based on example bot https://github.com/jw84/messenger-bot-tutorial
-
+//   and sample watson messenger here https://github.com/nheidloff/facebook-watson-bot
 'use strict'
 
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
-const app = express()
-
+//const cfenv = require("cfenv");
 const pg = require('pg')
+const watson = require('watson-developer-cloud');
+const extend = require('util')._extend;
+const app = express()
 const conString = 'postgres://Mickey:password@localhost:5432/open_pantry'
 
+
+/*****       WATSON STUFF      **********/
+var watsonDialogCredentials =  extend({
+  // used when running locally
+  url: 'https://gateway.watsonplatform.net/dialog/api',
+  username: 'xxx',
+  password: 'xxx',
+  version: 'v1'
+}, getServiceCredentialsFromBluemix('dialog'));
+
+var watsonNLCCredentials =  extend({
+  // used when running locally
+  url: 'https://gateway.watsonplatform.net/natural-language-classifier/api',
+  username: 'xxx',
+  password: 'xxx',
+  version: 'v1'
+}, getServiceCredentialsFromBluemix('natural_language_classifier'));
+
+// define dialog id here when running locally. when running on Bluemix set an environment variable
+var dialog_id = process.env.DIALOG_ID || 'ebca53c9-6e15-4b5a-b440-8e795efc2d1f';
+var dialog = watson.dialog(watsonDialogCredentials);
+var natural_language_classifier = watson.natural_language_classifier(watsonNLCCredentials);
+
+
+// 'senders' stores state about the user sessions and conversations
+// in a production level bot this should be handled differently
+// I couldn't find in the Facebook Messenger Platform (beta) documentation
+// whether state information can be sent with messages and I couldn't find
+// information about users joining and leaving conversations
+var senders = {};
+
+
+
+/***** FUNCTIONS AND ENDPOINTS  *****/
 app.set('port', (process.env.PORT || 5000))
 
 // parse application/x-www-form-urlencoded
@@ -23,21 +59,9 @@ app.get('/', function (req, res) {
 	res.send('hello world i am a secret bot')
 })
 
-
-function Inserts(template, data) {
-    if (!(this instanceof Inserts)) {
-        return new Inserts(template, data);
-    }
-    this._rawDBType = true;
-    this.formatDBType = function () {
-        return data.map(d=>'(' + pgp.as.format(template, d) + ')').join(',');
-    };
-}
-
-
 // for facebook verification
 app.get('/webhook/', function (req, res) {
-	if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') {
+	if (req.query['hub.verify_token'] === 'my_voice_is_my_password') {
 		res.send(req.query['hub.challenge'])
 	}
 	res.send('Error, wrong token')
@@ -62,6 +86,34 @@ app.post('/webhook/', function (req, res) {
 // recommended to inject access tokens as environmental variables, e.g.
 // const token = process.env.PAGE_ACCESS_TOKEN
 const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAxAwEpyQOTES7t84Vt9b2T4XIKCZAQuMZC58v3edIHN21N1S1HDgr3ZC3yKvicqAJga3HksYNwqaZB13ZCCcC19egH8x1FDuD5dJCJvI9sImuwrAZDZD"
+
+
+function recieveWatsonResponse(results, senderID) {
+
+}
+
+
+function sendMessageToWatson(text, senderID) {
+  if (text) {
+    var params = {
+      conversation_id: ''
+      dialog_id: dialog_id,
+      client_id: senders[sender].client_id,
+			sender_id: senderID,
+      input: text
+    };
+
+    dialog.conversation(text, function(err, results) {
+      if (err) {
+        console.log(err);
+        sendTextMessage(sender, "Error occured in Watson Dialog service");
+      }
+      else {
+        recieveWatsonResponse(results, senderID);
+      }
+    });
+  }
+}
 
 function checkExistingUser(senderID, text) {
 	const results = [];
@@ -119,7 +171,6 @@ function insertNewItems(senderID, itemArray) {
 
 	})
 }
-
 
 function sendTextMessage(sender, text) {
 	let messageData = { text:text }
