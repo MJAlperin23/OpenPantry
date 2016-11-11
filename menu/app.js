@@ -116,6 +116,7 @@ function updateMessage(res, input, data) {
       }
     }
     // console.log(cuisine);
+
     // console.log(ingred.toString());
     console.log(tot.toString());
 
@@ -134,6 +135,7 @@ function updateMessage(res, input, data) {
               var payload = {
                 workspace_id: workspace,
                 context: {},
+                
                 input: {}
               };
               console.log("hello");
