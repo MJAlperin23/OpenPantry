@@ -135,6 +135,7 @@ function updateMessage(res, input, data) {
               var payload = {
                 workspace_id: workspace,
                 context: {},
+                
                 input: {}
               };
               console.log("hello");
