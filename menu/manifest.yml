@@ -1,0 +1,12 @@
+applications:
+- path: .
+  memory: 256M
+  instances: 1
+  domain: mybluemix.net
+  name: lab2chatbot
+  host: lab2chatbot
+  disk_quota: 1024M
+  services:
+  - Conversation-philipps
+  env:
+    WORKSPACE_ID: 0d1b05e5-ae28-405d-9ca2-91b4c43116d2
