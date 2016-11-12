@@ -65,11 +65,12 @@ app.post('/webhook/', function (req, res) {
 	for (let i = 0; i < messaging_events.length; i++) {
 		let event = req.body.entry[0].messaging[i]
 		let sender = event.sender.id
-		let senderName = event.sender.name
+		let context = req.body.context
 		if (event.message && event.message.text) {
 			let text = event.message.text
 
-			checkExistingUser(sender, text)
+
+			checkExistingUser(sender, text, context)
 		}
 	}
 	res.sendStatus(200)
@@ -92,18 +93,22 @@ function sendMessageToWatson(text, senderID) {
 	    context: {},
 	    input: {}
 	  };
-	
+
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
 	    if ( err ) {
-	      return res.status( err.code || 500 ).json( err );
+	      console.log("error taling to watson")
 	    }
-	    updateMessage(res, payload, data);
+	    updateMessage(data);
 	  } );
   }
 }
 
-function checkExistingUser(senderID, text) {
+function getWatsonResponse(data) {
+	console.log(data)
+}
+
+function checkExistingUser(senderID, text, context) {
 	const results = [];
 	 var returnLength = 0
 	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
