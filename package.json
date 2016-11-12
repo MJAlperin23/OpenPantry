@@ -14,7 +14,8 @@
     "ejs": "2.4.1",
     "express": "^4.13.3",
     "pg": "^6.1.0",
-    "request": "^2.78.0"
+    "request": "^2.78.0",
+    "watson-developer-cloud": "^2.8.2"
   },
   "repository": {
     "type": "git",
