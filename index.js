@@ -87,7 +87,7 @@ function sendMessageToWatson(text, senderID, context) {
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
 	    if ( err ) {
-	      console.log("error taling to watson")
+	      console.log("error talking to watson")
 	    }
 	    getWatsonResponse(senderID, data);
 	  } );
@@ -95,7 +95,8 @@ function sendMessageToWatson(text, senderID, context) {
 }
 
 function getWatsonResponse(senderID, data) {
-	sendTextMessage(senderID, data)
+	console.log(data)
+	//sendTextMessage(senderID, data)
 }
 
 function checkExistingUser(senderID, text, context) {
