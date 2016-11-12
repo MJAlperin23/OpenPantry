@@ -68,7 +68,7 @@ app.post('/webhook/', function (req, res) {
 const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAxAwEpyQOTES7t84Vt9b2T4XIKCZAQuMZC58v3edIHN21N1S1HDgr3ZC3yKvicqAJga3HksYNwqaZB13ZCCcC19egH8x1FDuD5dJCJvI9sImuwrAZDZD"
 
 
-function sendMessageToWatson(text, senderID) {
+function sendMessageToWatson(text, senderID, context) {
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (text) {
 		var payload = {
@@ -113,7 +113,7 @@ function checkExistingUser(senderID, text, context) {
 
 			if(result.rows.length > 0)
 			{
-				sendMessageToWatson(text, senderID)
+				sendMessageToWatson(text, senderID, context)
 				//sendTextMessage(senderID, "Text received, echo: " + text.substring(0, 200))
 			} else {
 				addNewUser(senderID, text)
