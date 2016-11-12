@@ -73,16 +73,9 @@ function sendMessageToWatson(text, senderID, context) {
   if (text) {
 		var payload = {
 	    workspace_id: workspace,
-	    context: {},
-	    input: {}
+	    context: context,
+	    input: text
 	  };
-
-    if ( context ) {
-      payload.context = context;
-    }
-    if ( text ) {
-      payload.input = text;
-    }
 
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
