@@ -16,8 +16,8 @@ const conString = 'postgres://Mickey:password@localhost:5432/open_pantry'
 /*****       WATSON STUFF      **********/
 var conversation = watson.conversation( {
   url: 'https://gateway.watsonplatform.net/conversation/api',
-  username: '<username>',
-  password: '<password>',
+  username: '3cd9b082-fe46-41ba-adad-fe59c3a5c70a',
+  password: 'CkGtDZAhAOdS',
   version_date: '2016-07-11',
   version: 'v1'
 } );
@@ -87,12 +87,20 @@ function recieveWatsonResponse(results, senderID) {
 
 
 function sendMessageToWatson(text, senderID) {
+  let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (text) {
 		var payload = {
 	    workspace_id: workspace,
 	    context: {},
 	    input: {}
 	  };
+
+    if ( context ) {
+      payload.context = context;
+    }
+    if ( text ) {
+      payload.input = text;
+    }
 
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
