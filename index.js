@@ -70,6 +70,7 @@ const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAx
 
 function sendMessageToWatson(text, senderID, context) {
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
+	console.log(context)
   if (text) {
 		var payload = {
 	    workspace_id: workspace,
