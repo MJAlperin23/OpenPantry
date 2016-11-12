@@ -55,8 +55,6 @@ app.post('/webhook/', function (req, res) {
 		let context = req.body.context
 		if (event.message && event.message.text) {
 			let text = event.message.text
-
-
 			checkExistingUser(sender, text, context)
 		}
 	}
@@ -74,8 +72,8 @@ function sendMessageToWatson(text, senderID, context) {
   if (text) {
 		var payload = {
 	    workspace_id: workspace,
-	    context: context,
-	    input: text.substring(0,200)
+	    context: {},//context,
+	    input: {}//text.substring(0,200)
 	  };
 
 	  // Send the input to the conversation service
