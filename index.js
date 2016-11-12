@@ -89,7 +89,7 @@ function sendMessageToWatson(text, senderID, context) {
 	    if ( err ) {
 	      console.log("error taling to watson")
 	    }
-	    updateMessage(senderID, data);
+	    getWatsonResponse(senderID, data);
 	  } );
   }
 }
