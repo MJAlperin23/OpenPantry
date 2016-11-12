@@ -17,4 +17,6 @@ INSERT INTO messengerusers (id, name) VALUES
     (10001, 'Joe'),
     (10003, 'Bob');
 
-*/
+*/\
+
+DELETE FROM PantryItems WHERE item_name IN ('Pie, ')

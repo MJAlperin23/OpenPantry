@@ -14,21 +14,13 @@ const conString = 'postgres://Mickey:password@localhost:5432/open_pantry'
 
 
 /*****       WATSON STUFF      **********/
-var watsonDialogCredentials =  extend({
-  // used when running locally
-  url: 'https://gateway.watsonplatform.net/dialog/api',
-  username: 'xxx',
-  password: 'xxx',
+var conversation = watson.conversation( {
+  url: 'https://gateway.watsonplatform.net/conversation/api',
+  username: '<username>',
+  password: '<password>',
+  version_date: '2016-07-11',
   version: 'v1'
-}, getServiceCredentialsFromBluemix('dialog'));
-
-var watsonNLCCredentials =  extend({
-  // used when running locally
-  url: 'https://gateway.watsonplatform.net/natural-language-classifier/api',
-  username: 'xxx',
-  password: 'xxx',
-  version: 'v1'
-}, getServiceCredentialsFromBluemix('natural_language_classifier'));
+} );
 
 // define dialog id here when running locally. when running on Bluemix set an environment variable
 var dialog_id = process.env.DIALOG_ID || 'ebca53c9-6e15-4b5a-b440-8e795efc2d1f';
@@ -95,23 +87,27 @@ function recieveWatsonResponse(results, senderID) {
 
 function sendMessageToWatson(text, senderID) {
   if (text) {
-    var params = {
-      conversation_id: ''
-      dialog_id: dialog_id,
-      client_id: senders[sender].client_id,
-			sender_id: senderID,
-      input: text
-    };
-
-    dialog.conversation(text, function(err, results) {
-      if (err) {
-        console.log(err);
-        sendTextMessage(sender, "Error occured in Watson Dialog service");
-      }
-      else {
-        recieveWatsonResponse(results, senderID);
-      }
-    });
+		var payload = {
+	    workspace_id: workspace,
+	    context: {},
+	    input: {}
+	  };
+	  if ( req.body ) {
+	    if ( req.body.input ) {
+	      payload.input = req.body.input;
+	    }
+	    if ( req.body.context ) {
+	      // The client must maintain context/state
+	      payload.context = req.body.context;
+	    }
+	  }
+	  // Send the input to the conversation service
+	  conversation.message( payload, function(err, data) {
+	    if ( err ) {
+	      return res.status( err.code || 500 ).json( err );
+	    }
+	    updateMessage(res, payload, data);
+	  } );
   }
 }
 
