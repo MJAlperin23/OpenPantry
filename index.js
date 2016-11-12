@@ -22,19 +22,6 @@ var conversation = watson.conversation( {
   version: 'v1'
 } );
 
-// define dialog id here when running locally. when running on Bluemix set an environment variable
-var dialog_id = process.env.DIALOG_ID || 'ebca53c9-6e15-4b5a-b440-8e795efc2d1f';
-var dialog = watson.dialog(watsonDialogCredentials);
-var natural_language_classifier = watson.natural_language_classifier(watsonNLCCredentials);
-
-
-// 'senders' stores state about the user sessions and conversations
-// in a production level bot this should be handled differently
-// I couldn't find in the Facebook Messenger Platform (beta) documentation
-// whether state information can be sent with messages and I couldn't find
-// information about users joining and leaving conversations
-var senders = {};
-
 
 
 /***** FUNCTIONS AND ENDPOINTS  *****/
