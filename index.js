@@ -68,11 +68,6 @@ app.post('/webhook/', function (req, res) {
 const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAxAwEpyQOTES7t84Vt9b2T4XIKCZAQuMZC58v3edIHN21N1S1HDgr3ZC3yKvicqAJga3HksYNwqaZB13ZCCcC19egH8x1FDuD5dJCJvI9sImuwrAZDZD"
 
 
-function recieveWatsonResponse(results, senderID) {
-
-}
-
-
 function sendMessageToWatson(text, senderID) {
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (text) {
@@ -94,13 +89,13 @@ function sendMessageToWatson(text, senderID) {
 	    if ( err ) {
 	      console.log("error taling to watson")
 	    }
-	    updateMessage(data);
+	    updateMessage(senderID, data);
 	  } );
   }
 }
 
-function getWatsonResponse(data) {
-	console.log(data)
+function getWatsonResponse(senderID, data) {
+	sendTextMessage(senderID, data)
 }
 
 function checkExistingUser(senderID, text, context) {
@@ -118,7 +113,8 @@ function checkExistingUser(senderID, text, context) {
 
 			if(result.rows.length > 0)
 			{
-				sendTextMessage(senderID, "Text received, echo: " + text.substring(0, 200))
+				sendMessageToWatson(text, senderID)
+				//sendTextMessage(senderID, "Text received, echo: " + text.substring(0, 200))
 			} else {
 				addNewUser(senderID, text)
 			}
