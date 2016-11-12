@@ -82,6 +82,7 @@ function sendMessageToWatson(text, senderID, context) {
 	  conversation.message( payload, function(err, data) {
 	    if ( err ) {
 	      console.log("error talking to watson")
+				console.log(err)
 	    }
 	    getWatsonResponse(senderID, data);
 	  } );
