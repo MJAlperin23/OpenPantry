@@ -75,7 +75,7 @@ function sendMessageToWatson(text, senderID, context) {
 		var payload = {
 	    workspace_id: workspace,
 	    context: context,
-	    input: text
+	    input: text.substring(0,200)
 	  };
 
 	  // Send the input to the conversation service
