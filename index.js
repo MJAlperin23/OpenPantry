@@ -179,7 +179,7 @@ function getWatsonResponseInternal(senderID, data) {
   let ingred = [];
   for (var i = 0; i < data.entities.length; i++) {  
     // console.log(data.entities[i].value);  
-    else if (data.entities[i].entity === 'ingredients'){
+    if (data.entities[i].entity === 'ingredients'){
       ingred.push(data.entities[i].value.toLowerCase());
     }
   }
