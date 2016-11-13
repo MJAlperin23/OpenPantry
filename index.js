@@ -210,7 +210,7 @@ function determineNext(senderID, data) {
 
               console.log(recipe_String);
 
-              sendMessageToWatsonInternal(recipe.recipe.ingredients.toString(), senderID);
+              sendMessageToWatsonInternal(recipe_String, senderID);
           })
       })
     }
