@@ -23,7 +23,7 @@ var conversation = watson.conversation( {
   version: 'v1'
 } );
 
-
+let internal_search = false;
 
 /***** FUNCTIONS AND ENDPOINTS  *****/
 app.set('port', (process.env.PORT || 5000))
@@ -143,7 +143,9 @@ function determineNext(senderID, data) {
   for (var i = 0; i < data.intents.length; i++) {
     console.log(data);
     console.log(data.intents[i].intent);
-    if (data.intents[i].intent === 'Meals_to_make') {
+    if (data.intents[i].intent === 'Meals_to_make' && !internal_search) {
+      internal_search = true
+
 
       let tot = [];
       let cuisine  = "";
@@ -172,6 +174,7 @@ function determineNext(senderID, data) {
       })
     }
     else {
+      internal_search = false;
       let ingred = [];
       for (var i = 0; i < data.entities.length; i++) {  
         if (data.entities[i].entity === 'ingredients'){
