@@ -151,12 +151,15 @@ function getWatsonResponse(senderID, data) {
 
 function getWatsonResponseInternal(senderID, data, callback) {
   //console.log(data);
+  var numIngredients = 0
   let ingred = [];
   for (var i = 0; i < data.entities.length; i++) {  
     if (data.entities[i].entity === 'ingredients'){
       ingred.push(data.entities[i].value.toLowerCase());
     }
   }
+
+  numIngredients = ingred.length;
 
   let ingredientsInRecipe = '(';
   for (var i = 0; i < ingred.length; i++) {  
@@ -171,7 +174,7 @@ function getWatsonResponseInternal(senderID, data, callback) {
 
   console.log(ingredientsInRecipe);
   //console.log(ingredientsInRecipe);
-  checkPantryForRecipe(senderID, ingredientsInRecipe, callback)
+  checkPantryForRecipe(senderID, ingredientsInRecipe, numIngredients, callback)
 
 }
 
@@ -362,7 +365,7 @@ function deleteItems(senderID, itemArray) {
 	})
 }
 
-function checkPantryForRecipe(senderID, itemList, callback) {
+function checkPantryForRecipe(senderID, itemList, numItems, callback) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
 		if (err) {
 			return console.error('error fetching client from pool', err)
@@ -373,9 +376,9 @@ function checkPantryForRecipe(senderID, itemList, callback) {
 				if (err) {
 					return console.error('error happened during query', err)
 				}
-        console.log(result.rows.length + "  :  " + itemList.length)
+        console.log(result.rows.length + "  :  " + numItems)
 
-        if(result.rows.length == itemList.length) {
+        if(result.rows.length == numItems) {
           callback(true)
         } else {
           callback(false)
