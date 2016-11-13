@@ -173,7 +173,7 @@ function getWatsonResponseInternal(senderID, data, callback) {
   ingredientsInRecipe += ")"
 
   console.log(ingredientsInRecipe);
-  //console.log(ingredientsInRecipe);
+
   checkPantryForRecipe(senderID, ingredientsInRecipe, numIngredients, callback)
 
 }
@@ -226,16 +226,27 @@ function determineNext(senderID, data) {
     }
 
     else if (data.intents[i].intent === 'do_I_have') {
-      let checking = [];
+      let itemsToCheck = [];
       for (var i = 0; i < data.entities.length; i++) {  
         if (data.entities[i].entity === 'ingredients'){
-          checking.push(data.entities[i].value.toLowerCase());
+          itemsToCheck.push(data.entities[i].value.toLowerCase());
         }
       }
 
-      //MICKEY: the array of ingredients to check if they're in the pantry is checking
-      console.log(checking);
-      checkItemsInPantry(senderID, checking, function(results) {
+      let itemsCheckString = '(';
+      for (var i = 0; i < itemsToCheck.length; i++) {  
+        if (i === itemsToCheck.length - 1) {
+          itemsCheckString += "\'" + itemsToCheck[i] + "\'"
+        }
+        else {
+          itemsCheckString += "\'" + itemsToCheck[i] + "\',"
+        }
+      }
+      itemsCheckString += ")"
+
+
+      checkItemsInPantry(senderID, itemsCheckString, function(results) {
+
         var responseMessage = "";
         if(results.rows.length == 0)
         {
