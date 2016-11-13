@@ -68,9 +68,6 @@ app.post('/webhook/', function (req, res) {
 const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAxAwEpyQOTES7t84Vt9b2T4XIKCZAQuMZC58v3edIHN21N1S1HDgr3ZC3yKvicqAJga3HksYNwqaZB13ZCCcC19egH8x1FDuD5dJCJvI9sImuwrAZDZD"
 
 function checkExistingUser(senderID, text) {
-  console.log("solve this problem please: " + typeof (text));
-  console.log(text);
-
 	const results = [];
 	 var returnLength = 0
 	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
@@ -124,6 +121,7 @@ function sendMessageToWatson(messengerText, senderID) {
 
 		payload.input = textDict;
 
+    console.log(payload);
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
 	    if ( err ) {
@@ -150,6 +148,8 @@ function sendMessageToWatsonInternal(messengerText, senderID) {
 		};
 
 		payload.input = textDict;
+
+    console.log(payload);
 
     console.log("look here" + payload.input.text);
     console.log(typeof(payload.input));
