@@ -276,7 +276,7 @@ function getPossibleRecipies(senderID, data, callback) {
               possibleRecipeArray.push(data.recipes[i])
             }
 
-            if(i == (length - 1){
+            if(i == (length - 1)) {
               callback(possibleRecipeArray)
             }
         });
