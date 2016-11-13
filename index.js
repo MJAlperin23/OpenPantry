@@ -65,40 +65,6 @@ app.post('/webhook/', function (req, res) {
 // const token = process.env.PAGE_ACCESS_TOKEN
 const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAxAwEpyQOTES7t84Vt9b2T4XIKCZAQuMZC58v3edIHN21N1S1HDgr3ZC3yKvicqAJga3HksYNwqaZB13ZCCcC19egH8x1FDuD5dJCJvI9sImuwrAZDZD"
 
-
-function sendMessageToWatson(messengerText, senderID, context) {
-  let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
-  if (messengerText) {
-		var payload = {
-	    workspace_id: workspace,
-	    context: {},//context,
-	    input: {}//text.substring(0,200)
-	  };
-
-		var textDict = {
-			text: messengerText
-		};
-
-		payload.input = textDict;
-
-	  // Send the input to the conversation service
-	  conversation.message( payload, function(err, data) {
-	    if ( err ) {
-	      console.log("error talking to watson")
-				console.log(err)
-	    }
-	    getWatsonResponse(senderID, data);
-	  } );
-  }
-}
-
-function getWatsonResponse(senderID, data) {
-	console.log(data)
-	var botResponse = data.output.text[0]
-	console.log(botResponse);
-	sendTextMessage(senderID, botResponse)
-}
-
 function checkExistingUser(senderID, text, context) {
 	const results = [];
 	 var returnLength = 0
@@ -138,6 +104,37 @@ function addNewUser(senderID, text) {
 	})
 }
 
+function sendMessageToWatson(messengerText, senderID, context) {
+  let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
+  if (messengerText) {
+		var payload = {
+	    workspace_id: workspace,
+	    context: {},//context,
+	    input: {}//text.substring(0,200)
+	  };
+
+		var textDict = {
+			text: messengerText
+		};
+
+		payload.input = textDict;
+
+	  // Send the input to the conversation service
+	  conversation.message( payload, function(err, data) {
+	    if ( err ) {
+	      console.log("error talking to watson")
+				console.log(err)
+	    }
+	    getWatsonResponse(senderID, data);
+	  } );
+  }
+}
+
+function getWatsonResponse(senderID, data) {
+	var botResponse = data.output.text[0]
+	sendTextMessage(senderID, botResponse)
+}
+
 function insertNewItems(senderID, itemArray) {
 
 	pg.connect(conString, function (err, client, done) {
@@ -159,7 +156,7 @@ function insertNewItems(senderID, itemArray) {
 
 function sendTextMessage(sender, text) {
 	let messageData = { text:text }
-
+	
 	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
 		qs: {access_token:token},
