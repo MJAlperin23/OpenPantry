@@ -169,7 +169,7 @@ function getWatsonResponse(senderID, data) {
 function getWatsonResponseInternal(senderID, data) {
 	var botResponse = data.output.text[0]
   console.log(data);
-	sendTextMessage(senderID, botResponse)
+	// sendTextMessage(senderID, botResponse)
 }
 
 function determineNext(senderID, data) {
@@ -202,7 +202,7 @@ function determineNext(senderID, data) {
             console.log(recipe.recipe.ingredients);
               let recipe_ingred = recipe.recipe.ingredients.toString();
               console.log(recipe_ingred);
-              sendMessageToWatsonInternal(recipe.recipe.ingredients[0], senderID);
+              sendMessageToWatsonInternal(recipe.recipe.ingredients.toString(), senderID);
           })
       })
     }
