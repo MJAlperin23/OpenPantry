@@ -233,18 +233,20 @@ function determineNext(senderID, data) {
         }
       }
 
-      let mic = '(';
-      for (var i = 0; i < purchased.length; i++) {  
-        if (i === purchased.length - 1) {
-          mic += "\'" + purchased[i] + "\'"
-        }
-        else {
-          mic += "\'" + purchased[i] + "\',"
-        }
-      }
-      mic += ")"
+      console.log(purchased);
 
-      console.log(mic);
+      // let mic = '(';
+      // for (var i = 0; i < purchased.length; i++) {  
+      //   if (i === purchased.length - 1) {
+      //     mic += "\'" + purchased[i] + "\'"
+      //   }
+      //   else {
+      //     mic += "\'" + purchased[i] + "\',"
+      //   }
+      // }
+      // mic += ")"
+
+      // console.log(mic);
     }
   }
 }
