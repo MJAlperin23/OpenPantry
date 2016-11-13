@@ -198,29 +198,6 @@ function getRecipe(id, callback) {
 
 }
 
-// function findRecipe (senderID, data) {
-//   search(tot.toString(), function(data) {
-//       getRecipe(data.recipes[0].recipe_id, function(recipe) {
-//           let recipe_ingred = recipe.recipe.ingredients.toString();
-//           console.log(recipe_ingred);
-//           // sendtowatson(recipe.recipe);
-//       })
-//   })
-// }
-
-// function making_food(data){
-//   console.log(data);
-//   for (var i = 0; i < data.intents.length; i++) {    
-//     // console.log(data.intents[i].intent);  
-//     if (data.intents[i].intent === 'Meals_to_make') {  
-//         return true;
-//     }    
-//   }
-//
-//   return false;
-// }
-
-
 
 function search(searchterms, callback) {
     //http.get('http://eternagame.wikia.com/wiki/EteRNA_Dictionary', callback);
