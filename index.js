@@ -169,6 +169,26 @@ function determineNext(senderID, data) {
   }
 }
 
+function getRecipe(id, callback) {
+    return http.get({
+		host: 'food2fork.com',
+		path: '/api/get?key=9372d5221aa1903af724bba0c775b4b7&rId=' + id
+    }, function(response) {
+        // Continuously update stream with data
+        var body = '';
+        response.on('data', function(d) {
+            body += d;
+        });
+        response.on('end', function() {
+
+            // Data reception is done, do whatever with it!
+            var parsed = JSON.parse(body);
+            return callback(parsed);
+        });
+    });
+
+}
+
 // function findRecipe (senderID, data) {
 //   search(tot.toString(), function(data) {
 //       getRecipe(data.recipes[0].recipe_id, function(recipe) {
