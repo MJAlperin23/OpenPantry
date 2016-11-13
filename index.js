@@ -245,16 +245,16 @@ function determineNext(senderID, data) {
       itemsCheckString += ")"
 
 
-      checkItemsInPantry(senderID, itemsCheckString, function(results) {
+      checkItemsInPantry(senderID, itemsCheckString, function(result) {
 
         var responseMessage = "";
-        if(results.rows.length == 0)
+        if(result.rows.length == 0)
         {
           responseMessage = "You do not have any of those items."
-        } else if(results.rows.length > 0) {
+        } else if(result.rows.length > 0) {
           responseMessage = "You have these items: "
           for(var i = 0; i<results.rows.length; i++) {
-            responseMessage += results.row[i] + ","
+            responseMessage += result.rows[i] + ","
           }
         }
 
