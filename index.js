@@ -335,7 +335,7 @@ function deleteItems(senderID, itemArray) {
 		}
 
 		for(var i = 0; i < itemArray.length; i++) {
-			client.query('DELETE FROM pantryitems WHERE item_name like \'$1\';', [itemArray[i]], function (err, result) {
+			client.query('DELETE FROM pantryitems WHERE item_name like $1;', [itemArray[i]], function (err, result) {
 				done()
 				if (err) {
 					return console.error('error happened during query', err)
