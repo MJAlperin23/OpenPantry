@@ -213,7 +213,7 @@ function determineNext(senderID, data) {
               let recipe_String = ''
               for (var i = 0; i < recipe.recipe.ingredients.length; i++) {
                 recipe_String += recipe.recipe.ingredients[i].toString()
-                recipe_String += ''
+                recipe_String += ' '
               }
 
               console.log(recipe_String);
