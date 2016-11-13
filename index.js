@@ -171,7 +171,7 @@ function getWatsonResponseInternal(senderID, data) {
   ingredientsInRecipe += ")"
 
   //console.log(ingredientsInRecipe);
-  checkPantryForRecipe(senderID, ingredientsInRecipe)
+  checkPantryForRecipe(senderID, ingredientsInRecipe);
 
 }
 
@@ -345,19 +345,17 @@ function deleteItems(senderID, itemArray) {
 	})
 }
 
-function checkPantryForRecipe(senderID, itemArray) {
-
+function checkPantryForRecipe(senderID, itemList) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
 		if (err) {
 			return console.error('error fetching client from pool', err)
 		}
-
-			client.query('SELECT item_name FROM pantryitems WHERE item_name IN $1;', [itemArray], function (err, result) {
+      console.log('SELECT item_name FROM pantryitems WHERE item_name IN $1;', [itemList])
+			client.query('SELECT item_name FROM pantryitems WHERE item_name IN $1;', [itemList], function (err, result) {
 				done()
 				if (err) {
 					return console.error('error happened during query', err)
 				}
-
         console.log(result.rows.length)
 			})
 	})
