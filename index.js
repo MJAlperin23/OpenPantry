@@ -253,6 +253,17 @@ function determineNext(senderID, data) {
         sendTextMessage(senderID, responseMessage)
       })
     }
+
+    else if (data.intents[i].intent === 'I_dont_have') {
+      let runout = [];
+      for (var i = 0; i < data.entities.length; i++) {  
+        if (data.entities[i].entity === 'ingredients'){
+          runout.push(data.entities[i].value.toLowerCase());
+        }
+      }
+
+      // deleteItems(senderID, runout)
+    }
   }
 }
 
