@@ -260,8 +260,8 @@ function getPossibleRecipies(senderID, data, callback) {
 
   var possibleRecipeArray = []
   var length = 3 //recipes.length
-  for(var i=0; i< length; i++ ) {
-    getRecipe(senderID, data.recipes[i].recipe_id, function(recipe) {
+  for(var rec=0; rec< length; rec++ ) {
+    getRecipe(senderID, data.recipes[rec].recipe_id, function(recipe) {
         let recipe_ingred = recipe.recipe.ingredients.toString();
 
         let recipe_String = ''
@@ -273,11 +273,11 @@ function getPossibleRecipies(senderID, data, callback) {
         sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID, function(isPossible) {
             if(isPossible) {
               //console.log(data.recipes[i])
-              possibleRecipeArray.push(data.recipes[i])
+              possibleRecipeArray.push(data.recipes[rec])
             }
 
-            console.log(i + "     :    " + (length - 1))
-            if(i == (length - 1)) {
+            console.log(rec + "     :    " + (length - 1))
+            if(rec == (length - 1)) {
               console.log(possibleRecipeArray)
               callback(possibleRecipeArray)
             }
