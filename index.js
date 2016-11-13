@@ -177,10 +177,10 @@ function getWatsonResponseInternal(senderID, data) {
   let mic = '(';
   for (var i = 0; i < ingred.length; i++) {  
     if (i === ingred.length - 1) {
-      mic += "\'" + ingred[i] + "\'"
+      mic += "'" + ingred[i] + "'"
     }
     else {
-      mic += "\'" + ingred[i] + "\',"
+      mic += "'" + ingred[i] + "',"
     }
   }
   mic += ")"
