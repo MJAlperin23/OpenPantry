@@ -167,7 +167,7 @@ function getWatsonResponse(senderID, data) {
 }
 
 function getWatsonResponseInternal(senderID, data) {
-	var botResponse = data.output.text[0]
+	// var botResponse = data.output.text[0]
   console.log(data);
 	// sendTextMessage(senderID, botResponse)
 }
