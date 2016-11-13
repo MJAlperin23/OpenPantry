@@ -184,6 +184,8 @@ function getWatsonResponseInternal(senderID, data) {
   }
   mic += ")"
 
+  //MICKEY: the string of ingredients is stored in mic
+
   console.log("here is mickey's string: " + mic + "      done");
 
 }
@@ -233,6 +235,7 @@ function determineNext(senderID, data) {
         }
       }
 
+      //MICKEY: the array of ingredients to add to pantry is purchased
       console.log(purchased);
     }
     else if (data.intents[i].intent === 'I_dont_have') {
@@ -243,6 +246,7 @@ function determineNext(senderID, data) {
         }
       }
 
+      //MICKEY: the array of ingredients to remove from pantry is runout
       console.log(runout);
     }
 
@@ -254,6 +258,7 @@ function determineNext(senderID, data) {
         }
       }
 
+      //MICKEY: the array of ingredients to check if they're in the pantry is checking
       console.log(checking);
     }
   }
