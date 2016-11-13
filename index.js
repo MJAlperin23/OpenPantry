@@ -248,17 +248,17 @@ function determineNext(senderID, data) {
 
       // console.log(mic);
     }
-    else if (data.intents[i].intent === 'I_dont_have') {
-      let runout = [];
-      for (var i = 0; i < data.entities.length; i++) {  
-        if (data.entities[i].entity === 'ingredients'){
-          runout.push(data.entities[i].value.toLowerCase());
-        }
-      }
-      console.log(runout);
-
+    // else if (data.intents[i].intent === 'I_dont_have') {
+    //   let runout = [];
+    //   for (var i = 0; i < data.entities.length; i++) {  
+    //     if (data.entities[i].entity === 'ingredients'){
+    //       runout.push(data.entities[i].value.toLowerCase());
+    //     }
+    //   }
+    //   console.log(runout);
+    //
+    // }
   }
-}
 }
 
 function getRecipe(senderID, id, callback) {
