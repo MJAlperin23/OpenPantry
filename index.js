@@ -139,7 +139,24 @@ function getWatsonResponse(senderID, data) {
 function determineNext(senderID, data) {
   for (var i = 0; i < data.intents.length; i++) {    
     // console.log(data.intents[i].intent);  
-    if (data.intents[i].intent === 'Meals_to_make') {  
+    if (data.intents[i].intent === 'Meals_to_make') {
+
+      let tot = [];
+      let cuisine  = "";
+      let ingred = [];
+      for (var i = 0; i < data.entities.length; i++) {  
+        // console.log(data.entities[i].value);  
+        if (data.entities[i].entity === 'cuisine') {
+            cuisine = data.entities[i].value.toLowerCase();
+            tot.push(data.entities[i].value.toLowerCase())
+            // console.log("found a cuisine");
+        }
+        else if (data.entities[i].entity === 'ingredients'){
+          ingred.push(data.entities[i].value.toLowerCase());
+          tot.push(data.entities[i].value.toLowerCase());
+        }
+      }
+
       search(tot.toString(), function(data) {
           getRecipe(data.recipes[0].recipe_id, function(recipe) {
               let recipe_ingred = recipe.recipe.ingredients.toString();
@@ -151,15 +168,15 @@ function determineNext(senderID, data) {
   }
 }
 
-function findRecipe (senderID, data) {
-  search(tot.toString(), function(data) {
-      getRecipe(data.recipes[0].recipe_id, function(recipe) {
-          let recipe_ingred = recipe.recipe.ingredients.toString();
-          console.log(recipe_ingred);
-          // sendtowatson(recipe.recipe);
-      })
-  })
-}
+// function findRecipe (senderID, data) {
+//   search(tot.toString(), function(data) {
+//       getRecipe(data.recipes[0].recipe_id, function(recipe) {
+//           let recipe_ingred = recipe.recipe.ingredients.toString();
+//           console.log(recipe_ingred);
+//           // sendtowatson(recipe.recipe);
+//       })
+//   })
+// }
 
 // function making_food(data){
 //   console.log(data);
