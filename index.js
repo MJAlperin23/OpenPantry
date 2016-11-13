@@ -278,7 +278,6 @@ function getPossibleRecipies(senderID, data, callback) {
               possibleRecipeArray.push(data.recipes[rec])
             }
 
-            console.log(respCounter + "     :    " + (length - 1))
             if(respCounter == length) {
               console.log(possibleRecipeArray)
               callback(possibleRecipeArray)
@@ -470,7 +469,7 @@ function buildRecipeMessageRespose(senderID, possibleRecipeArray) {
 		qs: {access_token:token},
 		method: 'POST',
 		json: {
-			recipient: {id:sender},
+			recipient: {id:senderID},
 			message: messageData,
 		}
 	}, function(error, response, body) {
