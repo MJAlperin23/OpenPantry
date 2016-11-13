@@ -89,21 +89,6 @@ function checkExistingUser(senderID, text) {
 	})
 }
 
-function addNewUser(senderID, text) {
-	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-	  if (err) {
-	    return console.error('error fetching client from pool', err)
-	  }
-	  client.query('INSERT INTO messengerusers (id, name) VALUES ($1, $2);', [senderID, 'HI'], function (err, result) {
-	    done()
-	    if (err) {
-	      return console.error('error happened during query', err)
-	    }
-			sendTextMessage(senderID, "Welcome to OpenPantry. Your Account Has been Created!")
-	  })
-	})
-}
-
 function sendMessageToWatson(messengerText, senderID) {
   console.log(messengerText);
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
@@ -174,20 +159,19 @@ function getWatsonResponseInternal(senderID, data) {
     }
   }
 
-  let mic = '(';
+  let ingredientsInRecipe = '(';
   for (var i = 0; i < ingred.length; i++) {  
     if (i === ingred.length - 1) {
-      mic += "\'" + ingred[i] + "\'"
+      ingredientsInRecipe += "\'" + ingred[i] + "\'"
     }
     else {
-      mic += "\'" + ingred[i] + "\',"
+      ingredientsInRecipe += "\'" + ingred[i] + "\',"
     }
   }
-  mic += ")"
+  ingredientsInRecipe += ")"
 
-  //MICKEY: the string of ingredients is stored in mic
-
-  console.log("here is mickey's string: " + mic + "      done");
+  console.log(ingredientsInRecipe);
+  checkPantryForRecipe(senderID, ingredientsInRecipe)
 
 }
 
@@ -236,8 +220,8 @@ function determineNext(senderID, data) {
         }
       }
 
-      //MICKEY: the array of ingredients to add to pantry is purchased
       console.log(purchased);
+      insertNewItems(senderID, purchased)
     }
     else if (data.intents[i].intent === 'I_dont_have') {
       let runout = [];
@@ -247,8 +231,8 @@ function determineNext(senderID, data) {
         }
       }
 
-      //MICKEY: the array of ingredients to remove from pantry is runout
       console.log(runout);
+      deleteItems(senderID, runout)
     }
 
     else if (data.intents[i].intent === 'do_I_have') {
@@ -309,6 +293,21 @@ function search(senderID, searchterms, callback) {
 
 }
 
+function addNewUser(senderID, text) {
+	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+	  if (err) {
+	    return console.error('error fetching client from pool', err)
+	  }
+	  client.query('INSERT INTO messengerusers (id, name) VALUES ($1, $2);', [senderID, 'HI'], function (err, result) {
+	    done()
+	    if (err) {
+	      return console.error('error happened during query', err)
+	    }
+			sendTextMessage(senderID, "Welcome to OpenPantry. Your Account Has been Created!")
+	  })
+	})
+}
+
 function insertNewItems(senderID, itemArray) {
 
 	pg.connect(conString, function (err, client, done) {
@@ -317,7 +316,7 @@ function insertNewItems(senderID, itemArray) {
 		}
 
 		for(var i = 0; i < itemArray.length; i++) {
-			client.query('INSERT INTO PantryItems (user_id, item_name) VALUES ($1, $2);', [senderID, itemArray[i]], function (err, result) {
+			client.query('INSERT INTO pantryitems (user_id, item_name) VALUES ($1, $2);', [senderID, itemArray[i]], function (err, result) {
 				done()
 				if (err) {
 					return console.error('error happened during query', err)
@@ -336,7 +335,7 @@ function deleteItems(senderID, itemArray) {
 		}
 
 		for(var i = 0; i < itemArray.length; i++) {
-			client.query('DELETE FROM PantryItems WHERE item_name like \'$1\';', [itemArray[i]], function (err, result) {
+			client.query('DELETE FROM pantryitems WHERE item_name like \'$1\';', [itemArray[i]], function (err, result) {
 				done()
 				if (err) {
 					return console.error('error happened during query', err)
@@ -344,6 +343,24 @@ function deleteItems(senderID, itemArray) {
 			})
 		}
 
+	})
+}
+
+function checkPantryForRecipe(senderID, itemArray) {
+
+  pg.connect(conString, function (err, client, done) {
+		if (err) {
+			return console.error('error fetching client from pool', err)
+		}
+
+			client.query('SELECT item_name FROM pantryitems WHERE item_name IN $1;', [itemArray], function (err, result) {
+				done()
+				if (err) {
+					return console.error('error happened during query', err)
+				}
+
+        console.log(result.rows.length)
+			})
 	})
 }
 
