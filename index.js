@@ -184,6 +184,14 @@ function getWatsonResponseInternal(senderID, data) {
     }
   }
 
+  let mic = '(';
+  for (var i = 0; i < ingred.length; i++) {  
+    mic += "\'" + ingred[i] + "\'"
+  }
+  mic += ")"
+
+  console.log(mic);
+
   console.log(ingred);
 
 
