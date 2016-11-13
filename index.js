@@ -263,7 +263,7 @@ function getPossibleRecipies(senderID, data) {
     })
   }
 
-  buildRecipeMessageRespose(senderID, possibleRecipeArray)
+//  buildRecipeMessageRespose(senderID, possibleRecipeArray)
 }
 
 function getRecipe(senderID, id, callback) {
