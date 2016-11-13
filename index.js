@@ -132,11 +132,43 @@ function sendMessageToWatson(messengerText, senderID) {
   }
 }
 
+function sendMessageToWatsonInternal(messengerText, senderID) {
+  console.log(messengerText);
+  let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
+  if (messengerText) {
+		var payload = {
+	    workspace_id: workspace,
+	    context: {},//context,
+	    input: {}//text.substring(0,200)
+	  };
+
+		var textDict = {
+			text: messengerText
+		};
+
+		payload.input = textDict;
+
+	  // Send the input to the conversation service
+	  conversation.message( payload, function(err, data) {
+	    if ( err ) {
+	      console.log("error talking to watson")
+				console.log(err)
+	    }
+	    getWatsonResponseInternal(senderID, data);
+	  } );
+  }
+}
+
 function getWatsonResponse(senderID, data) {
 	var botResponse = data.output.text[0]
   determineNext(senderID, data)
 	sendTextMessage(senderID, botResponse)
 
+}
+
+function getWatsonResponseInternal(senderID, data) {
+	var botResponse = data.output.text[0]
+	sendTextMessage(senderID, botResponse)
 }
 
 function determineNext(senderID, data) {
@@ -169,7 +201,7 @@ function determineNext(senderID, data) {
             console.log(recipe.recipe.ingredients);
               let recipe_ingred = recipe.recipe.ingredients.toString();
               console.log(recipe_ingred);
-              sendMessageToWatson(recipe.recipe.ingredients[0], senderID);
+              sendMessageToWatsonInternal(recipe.recipe.ingredients[0], senderID);
           })
       })
     }
