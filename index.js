@@ -141,7 +141,7 @@ function getWatsonResponse(senderID, data) {
 
 function determineNext(senderID, data) {
   for (var i = 0; i < data.intents.length; i++) {
-    console.log(data.intents);
+    console.log(data);
     if (data.intents[i].intent === 'Meals_to_make') {
 
       let tot = [];
