@@ -253,7 +253,7 @@ function determineNext(senderID, data) {
           responseMessage = "You do not have any of those items."
         } else if(result.rows.length > 0) {
           responseMessage = "You have these items: "
-          for(var i = 0; i<results.rows.length; i++) {
+          for(var i = 0; i<result.rows.length; i++) {
             responseMessage += result.rows[i] + ","
           }
         }
