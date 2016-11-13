@@ -199,7 +199,9 @@ function determineNext(senderID, data) {
       }
 
       search(senderID, tot.toString(), function(data) {
-        getPossibleRecipies(senderID, data)
+        getPossibleRecipies(senderID, data, function(possibleRecipeArray){
+          buildRecipeMessageRespose(senderID, possibleRecipeArray)
+        })
       })
     }
     else if (data.intents[i].intent === 'food_I_have') {
@@ -263,7 +265,7 @@ function determineNext(senderID, data) {
   }
 }
 
-function getPossibleRecipies(senderID, data) {
+function getPossibleRecipies(senderID, data, callback) {
 
   var possibleRecipeArray = []
 
@@ -283,14 +285,13 @@ function getPossibleRecipies(senderID, data) {
         sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID, function(isPossible) {
             if(isPossible) {
               console.log(data.recipes[i])
-              //sendTextMessage(data.recipes[i].)
-              //possibleRecipeArray.push(data.recipes[i])
+              possibleRecipeArray.push(data.recipes[i])
             }
         });
     })
   }
 
-  buildRecipeMessageRespose(senderID, possibleRecipeArray)
+  return possibleRecipeArray
 }
 
 function getRecipe(senderID, id, callback) {
