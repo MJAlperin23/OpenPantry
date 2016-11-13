@@ -2,7 +2,7 @@
 
 CREATE TABLE MessengerUsers (
   id bigint UNIQUE NOT NULL,
-  date_created DATETIME
+  date_created TIMESTAMP
 );
 
 CREATE TABLE PantryItems (
@@ -10,6 +10,13 @@ CREATE TABLE PantryItems (
   user_id bigint REFERENCES messengerusers(id),
   item_name VARCHAR(60) UNIQUE
 );
+
+CREATE TABLE AllergyItems (
+  id serial PRIMARY KEY,
+  user_id bigint REFERENCES messengerusers(id),
+  item_name VARCHAR(60) UNIQUE
+);
+
 
 /*
 
@@ -19,4 +26,4 @@ INSERT INTO messengerusers (id, name) VALUES
 
 */\
 
-DELETE FROM PantryItems WHERE item_name IN ('Pie, ')
+-- DELETE FROM PantryItems WHERE item_name IN ('Pie, ')

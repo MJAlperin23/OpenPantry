@@ -334,7 +334,7 @@ function addNewUser(senderID, text) {
 	  if (err) {
 	    return console.error('error fetching client from pool', err)
 	  }
-	  client.query('INSERT INTO messengerusers (id, name) VALUES ($1, $2);', [senderID, 'HI'], function (err, result) {
+	  client.query('INSERT INTO messengerusers (id, name) VALUES ($1, $2);', [senderID, Date.now()], function (err, result) {
 	    done()
 	    if (err) {
 	      return console.error('error happened during query', err)
@@ -353,6 +353,25 @@ function insertNewItems(senderID, itemArray) {
 
 		for(var i = 0; i < itemArray.length; i++) {
 			client.query('INSERT INTO pantryitems (user_id, item_name) VALUES ($1, $2);', [senderID, itemArray[i]], function (err, result) {
+				done()
+				if (err) {
+					return console.error('error happened during query', err)
+				}
+			})
+		}
+
+	})
+}
+
+function insertAllergyItems(senderID, itemArray) {
+
+	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+		if (err) {
+			return console.error('error fetching client from pool', err)
+		}
+
+		for(var i = 0; i < itemArray.length; i++) {
+			client.query('INSERT INTO allergyitems (user_id, item_name) VALUES ($1, $2);', [senderID, itemArray[i]], function (err, result) {
 				done()
 				if (err) {
 					return console.error('error happened during query', err)
