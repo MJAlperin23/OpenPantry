@@ -136,11 +136,12 @@ function getWatsonResponse(senderID, data) {
 	var botResponse = data.output.text[0]
   determineNext(senderID, data)
 	sendTextMessage(senderID, botResponse)
+
 }
 
 function determineNext(senderID, data) {
-  for (var i = 0; i < data.intents.length; i++) {  
-    // console.log(data.intents[i].intent);  
+  for (var i = 0; i < data.intents.length; i++) {
+    console.log(data.intents);
     if (data.intents[i].intent === 'Meals_to_make') {
 
       let tot = [];
@@ -165,7 +166,7 @@ function determineNext(senderID, data) {
             console.log(recipe.recipe.ingredients);
               let recipe_ingred = recipe.recipe.ingredients.toString();
               console.log(recipe_ingred);
-              sendMessageToWatson(recipe.recipe.ingredients[0], senderID);
+              sendMessageToWatson(recipe.recipe.ingredients, senderID);
           })
       })
     }
