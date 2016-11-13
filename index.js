@@ -116,7 +116,7 @@ function sendMessageToWatson(messengerText, senderID) {
   }
 }
 
-function sendMessageToWatsonInternal(messengerText, senderID) {
+function sendMessageToWatsonInternal(messengerText, senderID, callback) {
   //console.log(messengerText);
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (messengerText) {
@@ -138,7 +138,7 @@ function sendMessageToWatsonInternal(messengerText, senderID) {
 	      console.log("error talking to watson")
 				console.log(err)
 	    }
-	    getWatsonResponseInternal(senderID, data);
+	    getWatsonResponseInternal(senderID, data, callback);
 	  } );
   }
 }
@@ -147,7 +147,6 @@ function getWatsonResponse(senderID, data) {
 	var botResponse = data.output.text[0]
   determineNext(senderID, data)
 	sendTextMessage(senderID, botResponse)
-
 }
 
 function getWatsonResponseInternal(senderID, data) {
@@ -172,7 +171,7 @@ function getWatsonResponseInternal(senderID, data) {
 
   console.log(ingredientsInRecipe);
   //console.log(ingredientsInRecipe);
-  checkPantryForRecipe(senderID, ingredientsInRecipe)
+  checkPantryForRecipe(senderID, ingredientsInRecipe, callback)
 
 }
 
@@ -197,20 +196,7 @@ function determineNext(senderID, data) {
       }
 
       search(senderID, tot.toString(), function(data) {
-          getRecipe(senderID, data.recipes[0].recipe_id, function(recipe) {
-          //  console.log(recipe);
-            //console.log(recipe.recipe.ingredients);
-              let recipe_ingred = recipe.recipe.ingredients.toString();
-            //  console.log(recipe_ingred);
-
-              let recipe_String = ''
-              for (var i = 0; i < recipe.recipe.ingredients.length; i++) {
-                recipe_String += recipe.recipe.ingredients[i].toString()
-                recipe_String += ' '
-              }
-
-              sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID);
-          })
+        getPossibleRecipies(senderID, data)
       })
     }
     else if (data.intents[i].intent === 'food_I_have') {
@@ -248,6 +234,34 @@ function determineNext(senderID, data) {
     //  console.log(checking);
     }
   }
+}
+
+function getPossibleRecipies() {
+
+  var possibleRecipeArray = []
+
+  for(var i=0; i<data.recipes.length; i++ ) {
+    getRecipe(senderID, data.recipes[i].recipe_id, function(recipe) {
+    //  console.log(recipe);
+      //console.log(recipe.recipe.ingredients);
+        let recipe_ingred = recipe.recipe.ingredients.toString();
+      //  console.log(recipe_ingred);
+
+        let recipe_String = ''
+        for (var i = 0; i < recipe.recipe.ingredients.length; i++) {
+          recipe_String += recipe.recipe.ingredients[i].toString()
+          recipe_String += ' '
+        }
+
+        sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID, function(isPossible) {
+            if(isPossible) {
+              possibleRecipeArray.push(data.recipes[i])
+            }
+        });
+    })
+  }
+
+  buildRecipeMessageRespose(senderID, possibleRecipeArray)
 }
 
 function getRecipe(senderID, id, callback) {
@@ -346,7 +360,7 @@ function deleteItems(senderID, itemArray) {
 	})
 }
 
-function checkPantryForRecipe(senderID, itemList) {
+function checkPantryForRecipe(senderID, itemList, callback) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
 		if (err) {
 			return console.error('error fetching client from pool', err)
@@ -358,6 +372,12 @@ function checkPantryForRecipe(senderID, itemList) {
 					return console.error('error happened during query', err)
 				}
         console.log(result.rows.length)
+
+        if(result.rows.length == itemList.length) {
+          callback(true)
+        } else {
+          callback(false)
+        }
 			})
 	})
 }
