@@ -469,7 +469,7 @@ function buildRecipeMessageRespose(senderID, possibleRecipeArray) {
 			"type": "template",
 			"payload": {
 				"template_type": "generic",
-				"elements": [recipiesToSend],
+				"elements": recipiesToSend,
 			}
 		}
 	}
