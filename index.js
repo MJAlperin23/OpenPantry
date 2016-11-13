@@ -5,7 +5,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
-var http = require('http');
+const http = require('http');
 //const cfenv = require("cfenv");
 const pg = require('pg')
 const watson = require('watson-developer-cloud');
@@ -36,7 +36,8 @@ app.use(bodyParser.json())
 
 // index
 app.get('/', function (req, res) {
-	res.send('hello world i am a secret bot')
+	//res.send('hello world i am a secret bot')
+  res.render('pages/example.ejs')
 })
 
 // for facebook verification
