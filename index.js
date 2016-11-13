@@ -170,7 +170,7 @@ function getWatsonResponseInternal(senderID, data) {
   }
   ingredientsInRecipe += ")"
 
-  //console.log(ingredientsInRecipe);
+  console.log(ingredientsInRecipe);
   checkPantryForRecipe(senderID, ingredientsInRecipe);
 
 }
