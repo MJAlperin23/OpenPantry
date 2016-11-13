@@ -69,6 +69,8 @@ const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAx
 
 function checkExistingUser(senderID, text) {
   console.log("solve this problem please: " + typeof (text));
+  console.log(text);
+
 	const results = [];
 	 var returnLength = 0
 	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
