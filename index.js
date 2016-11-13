@@ -291,7 +291,7 @@ function getPossibleRecipies(senderID, data, callback) {
     })
   }
 
-  return possibleRecipeArray
+   callback(possibleRecipeArray)
 }
 
 function getRecipe(senderID, id, callback) {
@@ -401,7 +401,6 @@ function checkPantryForRecipe(senderID, itemList, numItems, callback) {
 				if (err) {
 					return console.error('error happened during query', err)
 				}
-        console.log(result.rows.length + "  :  " + numItems)
 
         if(result.rows.length == numItems) {
           callback(true)
