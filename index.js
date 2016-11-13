@@ -115,7 +115,13 @@ function sendMessageToWatson(messengerText, senderID) {
   }
 }
 
-function sendMessageToWatsonInternal(messengerText, senderID, callback) {
+function getWatsonResponse(senderID, data) {
+	var botResponse = data.output.text[0]
+  determineNext(senderID, data)
+	sendTextMessage(senderID, botResponse)
+}
+
+function sendMessageToWatsonInternal(messengerText, senderID, arrayLoc, callback) {
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (messengerText) {
 		var payload = {
@@ -141,13 +147,7 @@ function sendMessageToWatsonInternal(messengerText, senderID, callback) {
   }
 }
 
-function getWatsonResponse(senderID, data) {
-	var botResponse = data.output.text[0]
-  determineNext(senderID, data)
-	sendTextMessage(senderID, botResponse)
-}
-
-function getWatsonResponseInternal(senderID, data, callback) {
+function getWatsonResponseInternal(senderID, data, arrayLoc, callback) {
   var numIngredients = 0
   let ingred = [];
   for (var i = 0; i < data.entities.length; i++) {  
@@ -169,7 +169,7 @@ function getWatsonResponseInternal(senderID, data, callback) {
   }
   ingredientsInRecipe += ")"
 
-  checkPantryForRecipe(senderID, ingredientsInRecipe, numIngredients, callback)
+  checkPantryForRecipe(senderID, ingredientsInRecipe, numIngredients, arrayLoc, callback)
 
 }
 
@@ -271,10 +271,10 @@ function getPossibleRecipies(senderID, data, callback) {
           recipe_String += ' '
         }
 
-        sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID, function(isPossible) {
+        sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID, rec, function(isPossible, arrayLoc) {
             respCounter++;
             if(isPossible) {
-              possibleRecipeArray.push(data.recipes[rec])
+              possibleRecipeArray.push(data.recipes[arrayLoc])
             }
 
             if(respCounter == length) {
@@ -381,7 +381,7 @@ function deleteItems(senderID, itemArray) {
 	})
 }
 
-function checkPantryForRecipe(senderID, itemList, numItems, callback) {
+function checkPantryForRecipe(senderID, itemList, numItems, arrayLoc, callback) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
 		if (err) {
 			return console.error('error fetching client from pool', err)
@@ -394,9 +394,9 @@ function checkPantryForRecipe(senderID, itemList, numItems, callback) {
 				}
 
         if(result.rows.length == numItems) {
-          callback(true)
+          callback(true, arrayLoc)
         } else {
-          callback(false)
+          callback(false, null)
         }
 			})
 	})
