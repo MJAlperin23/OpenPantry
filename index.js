@@ -272,10 +272,11 @@ function getPossibleRecipies(senderID, data, callback) {
 
         sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID, function(isPossible) {
             if(isPossible) {
-              console.log(data.recipes[i])
+              //console.log(data.recipes[i])
               possibleRecipeArray.push(data.recipes[i])
             }
 
+            console.log(i + "     :    " + (length - 1))
             if(i == (length - 1)) {
               console.log(possibleRecipeArray)
               callback(possibleRecipeArray)
