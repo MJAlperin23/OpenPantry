@@ -290,7 +290,7 @@ function getPossibleRecipies(senderID, data) {
     })
   }
 
-//  buildRecipeMessageRespose(senderID, possibleRecipeArray)
+  buildRecipeMessageRespose(senderID, possibleRecipeArray)
 }
 
 function getRecipe(senderID, id, callback) {
@@ -470,7 +470,7 @@ function buildRecipeMessageRespose(senderID, possibleRecipeArray) {
 			}
 		}
 	}
-  
+
 	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
 		qs: {access_token:token},
