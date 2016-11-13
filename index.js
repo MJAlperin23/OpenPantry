@@ -327,7 +327,7 @@ function sendTextMessage(sender, text) {
 		if (error) {
 			console.log('Error sending messages: ', error)
 		} else if (response.body.error) {
-			console.log('Error: ', response.body.error)
+			console.log('Error1: ', response.body.error)
 		}
 	})
 }
@@ -376,7 +376,7 @@ function sendGenericMessage(sender) {
 		if (error) {
 			console.log('Error sending messages: ', error)
 		} else if (response.body.error) {
-			console.log('Error: ', response.body.error)
+			console.log('Error2: ', response.body.error)
 		}
 	})
 }
