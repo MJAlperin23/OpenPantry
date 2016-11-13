@@ -53,9 +53,11 @@ app.post('/webhook/', function (req, res) {
 	for (let i = 0; i < messaging_events.length; i++) {
 		let event = req.body.entry[0].messaging[i]
 		let sender = event.sender.id
-		if (event.message && event.message.text) {
-			let text = event.message.text
-			checkExistingUser(sender, text)
+		if(sender != 1161553940576727) {
+			if (event.message && event.message.text) {
+				let text = event.message.text
+				checkExistingUser(sender, text)
+			}
 		}
 	}
 	res.sendStatus(200)
@@ -80,9 +82,7 @@ function checkExistingUser(senderID, text) {
 
 			if(result.rows.length > 0)
 			{
-				sendGenericMessage(senderID)
 				sendMessageToWatson(text, senderID)
-				//sendTextMessage(senderID, "Text received, echo: " + text.substring(0, 200))
 			} else {
 				addNewUser(senderID, text)
 			}
