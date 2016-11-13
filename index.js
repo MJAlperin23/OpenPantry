@@ -259,6 +259,7 @@ function determineNext(senderID, data) {
 function getPossibleRecipies(senderID, data, callback) {
 
   var possibleRecipeArray = []
+  var respCounter = 0
   var length = 3 //recipes.length
   for(var rec=0; rec< length; rec++ ) {
     getRecipe(senderID, data.recipes[rec].recipe_id, function(recipe) {
@@ -271,13 +272,14 @@ function getPossibleRecipies(senderID, data, callback) {
         }
 
         sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID, function(isPossible) {
+            respCounter++;
             if(isPossible) {
               //console.log(data.recipes[i])
               possibleRecipeArray.push(data.recipes[rec])
             }
 
-            console.log(rec + "     :    " + (length - 1))
-            if(rec == (length - 1)) {
+            console.log(respCounter + "     :    " + (length - 1))
+            if(respCounter == length) {
               console.log(possibleRecipeArray)
               callback(possibleRecipeArray)
             }
