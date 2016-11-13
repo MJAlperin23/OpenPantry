@@ -274,12 +274,10 @@ function getPossibleRecipies(senderID, data, callback) {
         sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID, function(isPossible) {
             respCounter++;
             if(isPossible) {
-              //console.log(data.recipes[i])
               possibleRecipeArray.push(data.recipes[rec])
             }
 
             if(respCounter == length) {
-              console.log(possibleRecipeArray)
               callback(possibleRecipeArray)
             }
         });
@@ -447,17 +445,19 @@ function buildRecipeMessageRespose(senderID, possibleRecipeArray) {
 
   for(var i=0; i<possibleRecipeArray.length; i++) {
     var builtRecipe = {
-      "title": possibleRecipeArray[0].title,
-      "subtitle": possibleRecipeArray[0].publisher,
-      "image_url": possibleRecipeArray[0].image_url,
+      "title": possibleRecipeArray[i].title,
+      "subtitle": possibleRecipeArray[i].publisher,
+      "image_url": possibleRecipeArray[i].image_url,
       "buttons": [{
         "type": "web_url",
-        "url": possibleRecipeArray[0].source_url,
-        "title": "Click Here For Recipe"
+        "url": possibleRecipeArray[i].source_url,
+        "title": "Link To Recipe"
       }]
     }
     recipiesToSend.push(builtRecipe)
   }
+
+  console.log(recipiesToSend)
 
   var messageData = {
 		"attachment": {
