@@ -89,23 +89,8 @@ function checkExistingUser(senderID, text) {
 	})
 }
 
-function addNewUser(senderID, text) {
-	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-	  if (err) {
-	    return console.error('error fetching client from pool', err)
-	  }
-	  client.query('INSERT INTO messengerusers (id, name) VALUES ($1, $2);', [senderID, 'HI'], function (err, result) {
-	    done()
-	    if (err) {
-	      return console.error('error happened during query', err)
-	    }
-			sendTextMessage(senderID, "Welcome to OpenPantry. Your Account Has been Created!")
-	  })
-	})
-}
-
 function sendMessageToWatson(messengerText, senderID) {
-  console.log(messengerText);
+//  console.log(messengerText);
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (messengerText) {
 		var payload = {
@@ -132,7 +117,7 @@ function sendMessageToWatson(messengerText, senderID) {
 }
 
 function sendMessageToWatsonInternal(messengerText, senderID) {
-  console.log(messengerText);
+  //console.log(messengerText);
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (messengerText) {
 		var payload = {
@@ -166,7 +151,7 @@ function getWatsonResponse(senderID, data) {
 }
 
 function getWatsonResponseInternal(senderID, data) {
-  console.log(data);
+  //console.log(data);
   let ingred = [];
   for (var i = 0; i < data.entities.length; i++) {  
     if (data.entities[i].entity === 'ingredients'){
@@ -174,26 +159,25 @@ function getWatsonResponseInternal(senderID, data) {
     }
   }
 
-  let mic = '(';
+  let ingredientsInRecipe = '(';
   for (var i = 0; i < ingred.length; i++) {  
     if (i === ingred.length - 1) {
-      mic += "'" + ingred[i] + "'"
+      ingredientsInRecipe += "'" + ingred[i] + "'"
     }
     else {
-      mic += "'" + ingred[i] + "',"
+      ingredientsInRecipe += "'" + ingred[i] + "',"
     }
   }
-  mic += ")"
+  ingredientsInRecipe += ")"
 
-  //MICKEY: the string of ingredients is stored in mic
-
-  console.log("here is mickey's string: " + mic + "      done");
+  //console.log(ingredientsInRecipe);
+  checkPantryForRecipe(senderID, ingredientsInRecipe);
 
 }
 
 function determineNext(senderID, data) {
   for (var i = 0; i < data.intents.length; i++) {
-    console.log(data);
+    //console.log(data);
     // console.log(data.intents[i].intent);
     if (data.intents[i].intent === 'Meals_to_make') {
 
@@ -213,10 +197,10 @@ function determineNext(senderID, data) {
 
       search(senderID, tot.toString(), function(data) {
           getRecipe(senderID, data.recipes[0].recipe_id, function(recipe) {
-            console.log(recipe);
-            console.log(recipe.recipe.ingredients);
+          //  console.log(recipe);
+            //console.log(recipe.recipe.ingredients);
               let recipe_ingred = recipe.recipe.ingredients.toString();
-              console.log(recipe_ingred);
+            //  console.log(recipe_ingred);
 
               let recipe_String = ''
               for (var i = 0; i < recipe.recipe.ingredients.length; i++) {
@@ -236,8 +220,8 @@ function determineNext(senderID, data) {
         }
       }
 
-      //MICKEY: the array of ingredients to add to pantry is purchased
-      console.log(purchased);
+      //console.log(purchased);
+      insertNewItems(senderID, purchased)
     }
     else if (data.intents[i].intent === 'I_dont_have') {
       let runout = [];
@@ -247,8 +231,8 @@ function determineNext(senderID, data) {
         }
       }
 
-      //MICKEY: the array of ingredients to remove from pantry is runout
-      console.log(runout);
+    //  console.log(runout);
+      deleteItems(senderID, runout)
     }
 
     else if (data.intents[i].intent === 'do_I_have') {
@@ -260,7 +244,7 @@ function determineNext(senderID, data) {
       }
 
       //MICKEY: the array of ingredients to check if they're in the pantry is checking
-      console.log(checking);
+    //  console.log(checking);
     }
   }
 }
@@ -288,7 +272,6 @@ function getRecipe(senderID, id, callback) {
 
 function search(senderID, searchterms, callback) {
     //http.get('http://eternagame.wikia.com/wiki/EteRNA_Dictionary', callback);
-    console.log(callback);
 
     return http.get({
 		host: 'food2fork.com',
@@ -309,15 +292,30 @@ function search(senderID, searchterms, callback) {
 
 }
 
+function addNewUser(senderID, text) {
+	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+	  if (err) {
+	    return console.error('error fetching client from pool', err)
+	  }
+	  client.query('INSERT INTO messengerusers (id, name) VALUES ($1, $2);', [senderID, 'HI'], function (err, result) {
+	    done()
+	    if (err) {
+	      return console.error('error happened during query', err)
+	    }
+			sendTextMessage(senderID, "Welcome to OpenPantry. Your Account Has been Created!")
+	  })
+	})
+}
+
 function insertNewItems(senderID, itemArray) {
 
-	pg.connect(conString, function (err, client, done) {
+	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
 		if (err) {
 			return console.error('error fetching client from pool', err)
 		}
 
 		for(var i = 0; i < itemArray.length; i++) {
-			client.query('INSERT INTO PantryItems (user_id, item_name) VALUES ($1, $2);', [senderID, itemArray[i]], function (err, result) {
+			client.query('INSERT INTO pantryitems (user_id, item_name) VALUES ($1, $2);', [senderID, itemArray[i]], function (err, result) {
 				done()
 				if (err) {
 					return console.error('error happened during query', err)
@@ -330,13 +328,13 @@ function insertNewItems(senderID, itemArray) {
 
 function deleteItems(senderID, itemArray) {
 
-	pg.connect(conString, function (err, client, done) {
+	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
 		if (err) {
 			return console.error('error fetching client from pool', err)
 		}
 
 		for(var i = 0; i < itemArray.length; i++) {
-			client.query('DELETE FROM PantryItems WHERE item_name like \'$1\';', [itemArray[i]], function (err, result) {
+			client.query('DELETE FROM pantryitems WHERE item_name like $1;', [itemArray[i]], function (err, result) {
 				done()
 				if (err) {
 					return console.error('error happened during query', err)
@@ -344,6 +342,22 @@ function deleteItems(senderID, itemArray) {
 			})
 		}
 
+	})
+}
+
+function checkPantryForRecipe(senderID, itemList) {
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+		if (err) {
+			return console.error('error fetching client from pool', err)
+		}
+      console.log('SELECT item_name FROM pantryitems WHERE item_name IN $1;', [itemList])
+			client.query('SELECT item_name FROM pantryitems WHERE item_name IN $1;', [itemList], function (err, result) {
+				done()
+				if (err) {
+					return console.error('error happened during query', err)
+				}
+        console.log(result.rows.length)
+			})
 	})
 }
 
