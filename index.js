@@ -132,7 +132,70 @@ function sendMessageToWatson(messengerText, senderID, context) {
 
 function getWatsonResponse(senderID, data) {
 	var botResponse = data.output.text[0]
+  determineNext(senderID, data)
 	sendTextMessage(senderID, botResponse)
+}
+
+function determineNext(senderID, data) {
+  for (var i = 0; i < data.intents.length; i++) {    
+    // console.log(data.intents[i].intent);  
+    if (data.intents[i].intent === 'Meals_to_make') {  
+      search(tot.toString(), function(data) {
+          getRecipe(data.recipes[0].recipe_id, function(recipe) {
+              let recipe_ingred = recipe.recipe.ingredients.toString();
+              console.log(recipe_ingred);
+              // sendtowatson(recipe.recipe);
+          })
+      })
+    }
+  }
+}
+
+function findRecipe (senderID, data) {
+  search(tot.toString(), function(data) {
+      getRecipe(data.recipes[0].recipe_id, function(recipe) {
+          let recipe_ingred = recipe.recipe.ingredients.toString();
+          console.log(recipe_ingred);
+          // sendtowatson(recipe.recipe);
+      })
+  })
+}
+
+// function making_food(data){
+//   console.log(data);
+//   for (var i = 0; i < data.intents.length; i++) {    
+//     // console.log(data.intents[i].intent);  
+//     if (data.intents[i].intent === 'Meals_to_make') {  
+//         return true;
+//     }    
+//   }
+//
+//   return false;
+// }
+
+
+
+function search(searchterms, callback) {
+    //http.get('http://eternagame.wikia.com/wiki/EteRNA_Dictionary', callback);
+    //console.log(callback);
+
+    return http.get({
+		host: 'food2fork.com',
+		path: '/api/search?key=9372d5221aa1903af724bba0c775b4b7&q=' + searchterms
+    }, function(response) {
+        // Continuously update stream with data
+        var body = '';
+        response.on('data', function(d) {
+            body += d;
+        });
+        response.on('end', function() {
+
+            // Data reception is done, do whatever with it!
+            var parsed = JSON.parse(body);
+            return callback(parsed);
+        });
+    });
+
 }
 
 function insertNewItems(senderID, itemArray) {
@@ -156,7 +219,7 @@ function insertNewItems(senderID, itemArray) {
 
 function sendTextMessage(sender, text) {
 	let messageData = { text:text }
-	
+
 	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
 		qs: {access_token:token},

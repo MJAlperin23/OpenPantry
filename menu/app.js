@@ -103,7 +103,7 @@ function updateMessage(res, input, data) {
     let tot = [];
     let cuisine  = "";
     let ingred = [];
-    for (var i = 0; i < data.entities.length; i++) {    
+    for (var i = 0; i < data.entities.length; i++) {   
       // console.log(data.entities[i].value);  
       if (data.entities[i].entity === 'cuisine') {
           cuisine = data.entities[i].value.toLowerCase();
@@ -123,46 +123,7 @@ function updateMessage(res, input, data) {
     search(tot.toString(), function(data) {
     // for (var i = 0; i < data.count; i++) {
         getRecipe(data.recipes[0].recipe_id, function(recipe) {
-          console.log("Hello");
-            let recipe_ingred = recipe.recipe.ingredients.slice(0, 5).toString();
-            console.log("Hello");
-
-
-            app.post( '/api/message', function(req, res) {
-              console.log("in call");
-              var workspace = process.env.WORKSPACE_ID || '<workspace-id>';
-
-              var payload = {
-                workspace_id: workspace,
-                context: {},
-                
-                input: {}
-              };
-              console.log("hello");
-
-              payload.input = recipe_ingred;
-              payload.context = req.body.context;
-
-              // if ( req.body ) {
-              //   if ( req.body.input ) {
-              //     payload.input = req.body.input;
-              //   }
-              //   if ( req.body.context ) {
-              //     // The client must maintain context/state
-              //     payload.context = req.body.context;
-              //   }
-              // }
-              // Send the input to the conversation service
-              conversation.message( payload, function(err, data) {
-                if ( err ) {
-                  return res.status( err.code || 500 ).json( err );
-                }
-                console.log(data);
-                // updateMessage(res, payload, data);
-              } );
-            } );
-
-
+            let recipe_ingred = recipe.recipe.ingredients.toString();
             console.log(recipe_ingred);
             // sendtowatson(recipe.recipe);
         })
