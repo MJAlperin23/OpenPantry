@@ -2,13 +2,13 @@
 
 CREATE TABLE MessengerUsers (
   id bigint UNIQUE NOT NULL,
-  name VARCHAR(60)
+  date_created DATETIME
 );
 
 CREATE TABLE PantryItems (
   id serial PRIMARY KEY,
   user_id bigint REFERENCES messengerusers(id),
-  item_name VARCHAR(60)
+  item_name VARCHAR(60) UNIQUE
 );
 
 /*
