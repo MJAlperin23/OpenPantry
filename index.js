@@ -66,7 +66,7 @@ app.post('/webhook/', function (req, res) {
 const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAxAwEpyQOTES7t84Vt9b2T4XIKCZAQuMZC58v3edIHN21N1S1HDgr3ZC3yKvicqAJga3HksYNwqaZB13ZCCcC19egH8x1FDuD5dJCJvI9sImuwrAZDZD"
 
 
-function sendMessageToWatson(text, senderID, context) {
+function sendMessageToWatson(messengerText, senderID, context) {
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
 	console.log(text)
   if (text) {
@@ -78,14 +78,8 @@ function sendMessageToWatson(text, senderID, context) {
 	  };
 
 		var textDict = {
-			text: text
+			text: messengerText
 		};
-
-		/*
-		dict.push({
-			key: "text"
-			value: text
-		}); */
 
 		payload.input = textDict;
 
@@ -101,8 +95,8 @@ function sendMessageToWatson(text, senderID, context) {
 }
 
 function getWatsonResponse(senderID, data) {
-	console.log(data)
-	//sendTextMessage(senderID, data)
+	var botResponse = data.input.text
+	sendTextMessage(senderID, botResponse)
 }
 
 function checkExistingUser(senderID, text, context) {
