@@ -162,10 +162,10 @@ function getWatsonResponseInternal(senderID, data) {
   let ingredientsInRecipe = '(';
   for (var i = 0; i < ingred.length; i++) {  
     if (i === ingred.length - 1) {
-      ingredientsInRecipe += "\'" + ingred[i] + "\'"
+      ingredientsInRecipe += "'" + ingred[i] + "'"
     }
     else {
-      ingredientsInRecipe += "\'" + ingred[i] + "\',"
+      ingredientsInRecipe += "'" + ingred[i] + "',"
     }
   }
   ingredientsInRecipe += ")"
