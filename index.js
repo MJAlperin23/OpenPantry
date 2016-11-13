@@ -94,7 +94,7 @@ function sendMessageToWatson(messengerText, senderID, context) {
 
 function getWatsonResponse(senderID, data) {
 	console.log(data)
-	var botResponse = data.input.text
+	var botResponse = data.output.text
 	sendTextMessage(senderID, botResponse)
 }
 
