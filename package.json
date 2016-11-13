@@ -13,6 +13,7 @@
     "body-parser": "^1.15.2",
     "ejs": "2.4.1",
     "express": "^4.13.3",
+    "http": "0.0.0",
     "pg": "^6.1.0",
     "request": "^2.78.0",
     "watson-developer-cloud": "^2.8.2"

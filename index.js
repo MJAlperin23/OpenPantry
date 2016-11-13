@@ -5,6 +5,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
+var http = require('http');
 //const cfenv = require("cfenv");
 const pg = require('pg')
 const watson = require('watson-developer-cloud');
