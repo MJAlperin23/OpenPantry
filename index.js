@@ -253,6 +253,16 @@ function determineNext(senderID, data) {
         sendTextMessage(senderID, responseMessage)
       })
     }
+
+    else if (data.intents[i].intent === 'allergy' && data.entities.length !== 0) {
+      let allergins = [];
+      for (var i = 0; i < data.entities.length; i++) {  
+        if (data.entities[i].entity === 'ingredients'){
+          allergins.push(data.entities[i].value.toLowerCase());
+        }
+      }
+        insertAllergyItems(senderID, allergins)
+    }
   }
 }
 
