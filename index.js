@@ -277,6 +277,7 @@ function getPossibleRecipies(senderID, data, callback) {
             }
 
             if(i == (length - 1)) {
+              console.log(possibleRecipeArray)
               callback(possibleRecipeArray)
             }
         });
