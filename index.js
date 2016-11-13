@@ -457,7 +457,7 @@ function buildRecipeMessageRespose(senderID, possibleRecipeArray) {
         "type": "web_url",
         "url": possibleRecipeArray[i].source_url,
         "title": "Link To Recipe"
-      }]
+      }],
     }
     recipiesToSend.push(builtRecipe)
   }
