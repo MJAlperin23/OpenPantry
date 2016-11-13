@@ -82,9 +82,9 @@ function checkExistingUser(senderID, text) {
 
 			if(result.rows.length > 0)
 			{
-				sendMessageToWatson(text, senderID)
+				sendMessageToWatson(text.recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID)
 			} else {
-				addNewUser(senderID, text)
+				addNewUser(senderID, text.recipe_String.replace(/(\r\n|\n|\r)/gm,""))
 			}
   	})
 	})
