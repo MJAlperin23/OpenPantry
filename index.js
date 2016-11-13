@@ -373,7 +373,7 @@ function checkPantryForRecipe(senderID, itemList, callback) {
 				if (err) {
 					return console.error('error happened during query', err)
 				}
-        console.log(result.rows.length)
+        console.log(result.rows.length + "  :  " + itemList.length)
 
         if(result.rows.length == itemList.length) {
           callback(true)
