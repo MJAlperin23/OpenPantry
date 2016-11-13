@@ -158,13 +158,22 @@ function determineNext(senderID, data) {
         }
       }
 
-      search(tot.toString(), function(data) {
+      search(senderID, tot.toString(), function(data) {
           getRecipe(data.recipes[0].recipe_id, function(recipe) {
               let recipe_ingred = recipe.recipe.ingredients.toString();
               console.log(recipe_ingred);
-              // sendtowatson(recipe.recipe);
+              sendMessageToWatson(senderID, recipe.recipe.ingredients.toString());
           })
       })
+    }
+    else {
+      let ingred = [];
+      for (var i = 0; i < data.entities.length; i++) {  
+        if (data.entities[i].entity === 'ingredients'){
+          ingred.push(data.entities[i].value.toLowerCase());
+        }
+      }
+      console.log(ingred.toString());
     }
   }
 }
