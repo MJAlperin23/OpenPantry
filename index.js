@@ -106,6 +106,7 @@ function addNewUser(senderID, text) {
 }
 
 function sendMessageToWatson(messengerText, senderID) {
+  console.log(messengerText);
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (messengerText) {
 		var payload = {
@@ -138,7 +139,7 @@ function getWatsonResponse(senderID, data) {
 }
 
 function determineNext(senderID, data) {
-  for (var i = 0; i < data.intents.length; i++) {    
+  for (var i = 0; i < data.intents.length; i++) {  
     // console.log(data.intents[i].intent);  
     if (data.intents[i].intent === 'Meals_to_make') {
 
@@ -159,10 +160,12 @@ function determineNext(senderID, data) {
       }
 
       search(senderID, tot.toString(), function(data) {
-          getRecipe(data.recipes[0].recipe_id, function(recipe) {
+          getRecipe(senderID, data.recipes[0].recipe_id, function(recipe) {
+            console.log(recipe);
+            console.log(recipe.recipe.ingredients);
               let recipe_ingred = recipe.recipe.ingredients.toString();
               console.log(recipe_ingred);
-              sendMessageToWatson(senderID, recipe.recipe.ingredients.toString());
+              sendMessageToWatson(recipe.recipe.ingredients[0], senderID);
           })
       })
     }
@@ -178,7 +181,7 @@ function determineNext(senderID, data) {
   }
 }
 
-function getRecipe(id, callback) {
+function getRecipe(senderID, id, callback) {
     return http.get({
 		host: 'food2fork.com',
 		path: '/api/get?key=9372d5221aa1903af724bba0c775b4b7&rId=' + id
@@ -199,9 +202,9 @@ function getRecipe(id, callback) {
 }
 
 
-function search(searchterms, callback) {
+function search(senderID, searchterms, callback) {
     //http.get('http://eternagame.wikia.com/wiki/EteRNA_Dictionary', callback);
-    //console.log(callback);
+    console.log(callback);
 
     return http.get({
 		host: 'food2fork.com',
