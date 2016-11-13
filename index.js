@@ -443,15 +443,20 @@ function sendTextMessage(sender, text) {
 
 function buildRecipeMessageRespose(senderID, possibleRecipeArray) {
 
-  var builtRecipe = {
-    "title": possibleRecipeArray[0].title,
-    "subtitle": possibleRecipeArray[0].publisher,
-    "image_url": possibleRecipeArray[0].image_url,
-    "buttons": [{
-      "type": "web_url",
-      "url": possibleRecipeArray[0].source_url,
-      "title": "Click Here For Recipe"
-    }]
+  var recipiesToSend = []
+
+  for(var i=0; i<possibleRecipeArray.length; i++) {
+    var builtRecipe = {
+      "title": possibleRecipeArray[0].title,
+      "subtitle": possibleRecipeArray[0].publisher,
+      "image_url": possibleRecipeArray[0].image_url,
+      "buttons": [{
+        "type": "web_url",
+        "url": possibleRecipeArray[0].source_url,
+        "title": "Click Here For Recipe"
+      }]
+    }
+    recipiesToSend.push(builtRecipe)
   }
 
   var messageData = {
@@ -459,7 +464,7 @@ function buildRecipeMessageRespose(senderID, possibleRecipeArray) {
 			"type": "template",
 			"payload": {
 				"template_type": "generic",
-				"elements": [builtRecipe],
+				"elements": [recipiesToSend],
 			}
 		}
 	}
