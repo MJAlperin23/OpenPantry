@@ -262,7 +262,8 @@ function getPossibleRecipies(senderID, data, callback) {
   var respCounter = 0
   var length = 3 //recipes.length
   for(var rec=0; rec< length; rec++ ) {
-    getRecipe(senderID, data.recipes[rec].recipe_id, function(recipe) {
+
+    getRecipe(senderID, data.recipes[rec].recipe_id, rec, function(recipe, recpLoc) {
         let recipe_ingred = recipe.recipe.ingredients.toString();
 
         let recipe_String = ''
@@ -271,7 +272,7 @@ function getPossibleRecipies(senderID, data, callback) {
           recipe_String += ' '
         }
 
-        sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID, rec, function(isPossible, arrayLoc) {
+        sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID, recpLoc, function(isPossible, arrayLoc) {
             respCounter++;
             if(isPossible) {
               possibleRecipeArray.push(data.recipes[arrayLoc])
@@ -285,7 +286,7 @@ function getPossibleRecipies(senderID, data, callback) {
   }
 }
 
-function getRecipe(senderID, id, callback) {
+function getRecipe(senderID, id, arrayLoc, callback) {
     return http.get({
 		host: 'food2fork.com',
 		path: '/api/get?key=9372d5221aa1903af724bba0c775b4b7&rId=' + id
@@ -299,7 +300,7 @@ function getRecipe(senderID, id, callback) {
 
             // Data reception is done, do whatever with it!
             var parsed = JSON.parse(body);
-            return callback(parsed);
+            return callback(parsed, arrayLoc);
         });
     });
 
