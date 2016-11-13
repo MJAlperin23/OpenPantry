@@ -176,6 +176,16 @@ function getWatsonResponse(senderID, data) {
 function getWatsonResponseInternal(senderID, data) {
 	// var botResponse = data.output.text[0]
   console.log(data);
+  let ingred = [];
+  for (var i = 0; i < data.entities.length; i++) {  
+    // console.log(data.entities[i].value);  
+    else if (data.entities[i].entity === 'ingredients'){
+      ingred.push(data.entities[i].value.toLowerCase());
+    }
+  }
+
+  console.log(ingred);
+
 
 	// sendTextMessage(senderID, botResponse)
 }
