@@ -195,9 +195,9 @@ function getWatsonResponseInternal(senderID, data) {
   }
   mic += ")"
 
-  console.log(mic);
+  console.log("here is mickey's string: " + mic + "      done");
 
-  console.log(ingred);
+  // console.log(ingred);
 
 
 	// sendTextMessage(senderID, botResponse)
