@@ -2,7 +2,7 @@
 
 CREATE TABLE MessengerUsers (
   id bigint UNIQUE NOT NULL,
-  date_created TIMESTAMP
+  timestamp_created BIGINT
 );
 
 CREATE TABLE PantryItems (
