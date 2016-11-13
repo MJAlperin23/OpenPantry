@@ -442,8 +442,13 @@ function sendTextMessage(sender, text) {
 function buildRecipeMessageRespose(senderID, possibleRecipeArray) {
 
   var recipiesToSend = []
+  var numSend = possibleRecipeArray.length
 
-  for(var i=0; i<possibleRecipeArray.length; i++) {
+  if(numSend > 3){
+    numSend = 3
+  }
+
+  for(var i=0; i<numSend; i++) {
     var builtRecipe = {
       "title": possibleRecipeArray[i].title,
       "subtitle": possibleRecipeArray[i].publisher,
