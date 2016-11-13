@@ -234,7 +234,21 @@ function determineNext(senderID, data) {
       }
 
       //MICKEY: the array of ingredients to check if they're in the pantry is checking
-    //  console.log(checking);
+      console.log(checking);
+      checkItemsInPantry(senderID, checking, function(results) {
+        var responseMessage = "";
+        if(results.rows.length == 0)
+        {
+          responseMessage = "You do not have any of those items."
+        } else if(results.rows.length > 0) {
+          responseMessage = "You have these items: "
+          for(var i = 0; i<results.rows.length; i++) {
+            responseMessage += results.row[i] + ","
+          }
+        }
+
+        sendTextMessage(responseMessage, senderID)
+      })
     }
   }
 }
@@ -243,7 +257,7 @@ function getPossibleRecipies(senderID, data) {
 
   var possibleRecipeArray = []
 
-  for(var i=0; i< 30 /*data.recipes.length*/; i++ ) {
+  for(var i=0; i< 3; i++ ) {  //recipes.length
     getRecipe(senderID, data.recipes[i].recipe_id, function(recipe) {
     //  console.log(recipe);
       //console.log(recipe.recipe.ingredients);
@@ -385,6 +399,24 @@ function checkPantryForRecipe(senderID, itemList, numItems, callback) {
         }
 			})
 	})
+}
+
+function checkItemsInPantry(senderID, itemList, callback) {
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    if (err) {
+      return console.error('error fetching client from pool', err)
+    }
+    //  console.log('SELECT item_name FROM pantryitems WHERE item_name IN '+ itemList + ';')
+      client.query('SELECT item_name FROM pantryitems WHERE item_name IN ' + itemList + ';', function (err, result) {
+        done()
+        if (err) {
+          return console.error('error happened during query', err)
+        }
+        console.log(result.rows.length + "  :  " + numItems)
+
+        callback(results)
+      })
+  })
 }
 
 function sendTextMessage(sender, text) {
