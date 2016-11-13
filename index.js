@@ -87,7 +87,7 @@ function sendMessageToWatson(text, senderID, context) {
 			value: text
 		}); */
 
-		payload.input = textMap;
+		payload.input = textDict;
 
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
