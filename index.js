@@ -142,7 +142,7 @@ function sendMessageToWatsonInternal(messengerText, senderID, arrayLoc, callback
 	      console.log("error talking to watson")
 				console.log(err)
 	    }
-	    getWatsonResponseInternal(senderID, data, callback);
+	    getWatsonResponseInternal(senderID, data, arrayLoc, callback);
 	  } );
   }
 }
