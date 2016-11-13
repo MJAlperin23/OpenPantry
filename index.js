@@ -236,15 +236,14 @@ function determineNext(senderID, data) {
       console.log(purchased);
     }
     else if (data.intents[i].intent === 'I_dont_have') {
-      console.log("in i dont have");
-      // let purchased = [];
-      // for (var i = 0; i < data.entities.length; i++) {  
-      //   if (data.entities[i].entity === 'ingredients'){
-      //     purchased.push(data.entities[i].value.toLowerCase());
-      //   }
-      // }
+      let runout = [];
+      for (var i = 0; i < data.entities.length; i++) {  
+        if (data.entities[i].entity === 'ingredients'){
+          runout.push(data.entities[i].value.toLowerCase());
+        }
+      }
 
-      // console.log(purchased);
+      console.log(runout);
     }
   }
 }
@@ -327,7 +326,7 @@ function sendTextMessage(sender, text) {
 		if (error) {
 			console.log('Error sending messages: ', error)
 		} else if (response.body.error) {
-			console.log('Error1: ', response.body.error)
+			console.log('Error: ', response.body.error)
 		}
 	})
 }
@@ -376,7 +375,7 @@ function sendGenericMessage(sender) {
 		if (error) {
 			console.log('Error sending messages: ', error)
 		} else if (response.body.error) {
-			console.log('Error2: ', response.body.error)
+			console.log('Error: ', response.body.error)
 		}
 	})
 }
