@@ -82,9 +82,9 @@ function checkExistingUser(senderID, text) {
 
 			if(result.rows.length > 0)
 			{
-				sendMessageToWatson(text, senderID)
+				sendMessageToWatson(text.replace(/(\r\n|\n|\r)/gm,""), senderID)
 			} else {
-				addNewUser(senderID, text)
+				addNewUser(senderID, text.replace(/(\r\n|\n|\r)/gm,""))
 			}
   	})
 	})
@@ -121,6 +121,7 @@ function sendMessageToWatson(messengerText, senderID) {
 
 		payload.input = textDict;
 
+    console.log(payload);
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
 	    if ( err ) {
@@ -148,6 +149,12 @@ function sendMessageToWatsonInternal(messengerText, senderID) {
 
 		payload.input = textDict;
 
+    console.log(payload);
+
+    console.log("look here" + payload.input.text);
+    console.log(typeof(payload.input));
+    console.log(typeof(payload.input.text));
+
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
 	    if ( err ) {
@@ -167,8 +174,32 @@ function getWatsonResponse(senderID, data) {
 }
 
 function getWatsonResponseInternal(senderID, data) {
-	var botResponse = data.output.text[0]
+	// var botResponse = data.output.text[0]
   console.log(data);
+  let ingred = [];
+  for (var i = 0; i < data.entities.length; i++) {  
+    // console.log(data.entities[i].value);  
+    if (data.entities[i].entity === 'ingredients'){
+      ingred.push(data.entities[i].value.toLowerCase());
+    }
+  }
+
+  let mic = '(';
+  for (var i = 0; i < ingred.length; i++) {  
+    if (i === ingred.length - 1) {
+      mic += "\'" + ingred[i] + "\'"
+    }
+    else {
+      mic += "\'" + ingred[i] + "\',"
+    }
+  }
+  mic += ")"
+
+  console.log("here is mickey's string: " + mic + "      done");
+
+  // console.log(ingred);
+
+
 	// sendTextMessage(senderID, botResponse)
 }
 
@@ -205,12 +236,13 @@ function determineNext(senderID, data) {
 
               let recipe_String = ''
               for (var i = 0; i < recipe.recipe.ingredients.length; i++) {
-                recipe_String += recipe.recipe.ingredients.length[i] + ' '
+                recipe_String += recipe.recipe.ingredients[i].toString()
+                recipe_String += ' '
               }
 
               console.log(recipe_String);
 
-              sendMessageToWatsonInternal(recipe.recipe.ingredients.toString(), senderID);
+              sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID);
           })
       })
     }
