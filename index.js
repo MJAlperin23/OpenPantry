@@ -344,7 +344,7 @@ function addNewUser(senderID, text) {
 	  if (err) {
 	    return console.error('error fetching client from pool', err)
 	  }
-	  client.query('INSERT INTO messengerusers (id, name) VALUES ($1, $2);', [senderID, Date.now()], function (err, result) {
+	  client.query('INSERT INTO messengerusers (id, timestamp_created) VALUES ($1, $2);', [senderID, Date.now()], function (err, result) {
 	    done()
 	    if (err) {
 	      return console.error('error happened during query', err)
