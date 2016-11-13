@@ -82,9 +82,9 @@ function checkExistingUser(senderID, text) {
 
 			if(result.rows.length > 0)
 			{
-				sendMessageToWatson(text.recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID)
+				sendMessageToWatson(text.replace(/(\r\n|\n|\r)/gm,""), senderID)
 			} else {
-				addNewUser(senderID, text.recipe_String.replace(/(\r\n|\n|\r)/gm,""))
+				addNewUser(senderID, text.replace(/(\r\n|\n|\r)/gm,""))
 			}
   	})
 	})
@@ -176,6 +176,7 @@ function getWatsonResponse(senderID, data) {
 function getWatsonResponseInternal(senderID, data) {
 	// var botResponse = data.output.text[0]
   console.log(data);
+
 	// sendTextMessage(senderID, botResponse)
 }
 
