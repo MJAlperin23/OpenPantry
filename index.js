@@ -203,9 +203,9 @@ function determineNext(senderID, data) {
               let recipe_ingred = recipe.recipe.ingredients.toString();
               console.log(recipe_ingred);
 
-              let recipe_String
+              let recipe_String = ''
               for (var i = 0; i < recipe.recipe.ingredients.length; i++) {
-                recipe_String += recipe.recipe.ingredients.length[i] + " "
+                recipe_String += recipe.recipe.ingredients.length[i] + ' '
               }
 
               console.log(recipe_String);
