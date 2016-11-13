@@ -77,7 +77,8 @@ function sendMessageToWatson(text, senderID, context) {
 	    input: {}//text.substring(0,200)
 	  };
 
-		payload.input = '{\"text\":\"' + text + '\"}';
+		textMap['text'] = text;
+		payload.input = textMap;
 
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
