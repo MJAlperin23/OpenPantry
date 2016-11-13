@@ -448,38 +448,29 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-function sendGenericMessage(sender) {
-	let messageData = {
+function buildRecipeMessageRespose(senderID, possibleRecipeArray) {
+
+  var builtRecipe = {
+    "title": possibleRecipeArray[0].title,
+    "subtitle": possibleRecipeArray[0].publisher,
+    "image_url": possibleRecipeArray[0].image_url,
+    "buttons": [{
+      "type": "web_url",
+      "url": possibleRecipeArray[0].source_url,
+      "title": "Click Here For Recipe"
+    }]
+  }
+
+  var messageData = {
 		"attachment": {
 			"type": "template",
 			"payload": {
 				"template_type": "generic",
-				"elements": [{
-					"title": "First card",
-					"subtitle": "Element #1 of an hscroll",
-					"image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-					"buttons": [{
-						"type": "web_url",
-						"url": "https://www.messenger.com",
-						"title": "web url"
-					}, {
-						"type": "postback",
-						"title": "Postback",
-						"payload": "Payload for first element in a generic bubble",
-					}],
-				}, {
-					"title": "Second card",
-					"subtitle": "Element #2 of an hscroll",
-					"image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-					"buttons": [{
-						"type": "postback",
-						"title": "Postback",
-						"payload": "Payload for second element in a generic bubble",
-					}],
-				}]
+				"elements": [builtRecipe],
 			}
 		}
 	}
+  
 	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
 		qs: {access_token:token},
@@ -496,8 +487,17 @@ function sendGenericMessage(sender) {
 		}
 	})
 }
-
-
+/*
+{
+  "title": "First card",
+  "subtitle": "Element #1 of an hscroll",
+  "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+  "buttons": [{
+    "type": "web_url",
+    "url": "https://www.messenger.com",
+    "title": "web url"
+  }
+*/
 app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'))
 })
