@@ -161,6 +161,8 @@ function determineNext(senderID, data) {
 
       search(senderID, tot.toString(), function(data) {
           getRecipe(senderID, data.recipes[0].recipe_id, function(recipe) {
+            console.log(recipe);
+            console.log(recipe.recipe.ingredients);
               let recipe_ingred = recipe.recipe.ingredients.toString();
               console.log(recipe_ingred);
               sendMessageToWatson(recipe_ingred[0], senderID);
