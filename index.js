@@ -149,7 +149,7 @@ function getWatsonResponse(senderID, data) {
 	sendTextMessage(senderID, botResponse)
 }
 
-function getWatsonResponseInternal(senderID, data) {
+function getWatsonResponseInternal(senderID, data, callback) {
   //console.log(data);
   let ingred = [];
   for (var i = 0; i < data.entities.length; i++) {  
