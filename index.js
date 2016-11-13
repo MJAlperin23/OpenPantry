@@ -395,7 +395,7 @@ function checkPantryForRecipe(senderID, itemList, numItems, callback) {
 		if (err) {
 			return console.error('error fetching client from pool', err)
 		}
-  
+
 			client.query('SELECT item_name FROM pantryitems WHERE item_name IN ' + itemList + ';', function (err, result) {
 				done()
 				if (err) {
@@ -424,7 +424,7 @@ function checkItemsInPantry(senderID, itemList, callback) {
           return console.error('error happened during query', err)
         }
 
-        callback(results)
+        callback(result)
       })
   })
 }
