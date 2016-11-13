@@ -53,10 +53,9 @@ app.post('/webhook/', function (req, res) {
 	for (let i = 0; i < messaging_events.length; i++) {
 		let event = req.body.entry[0].messaging[i]
 		let sender = event.sender.id
-		let context = req.body.context
 		if (event.message && event.message.text) {
 			let text = event.message.text
-			checkExistingUser(sender, text, context)
+			checkExistingUser(sender, text)
 		}
 	}
 	res.sendStatus(200)
@@ -66,7 +65,7 @@ app.post('/webhook/', function (req, res) {
 // const token = process.env.PAGE_ACCESS_TOKEN
 const token = "EAABkONPnt84BADCZAO1mku0ZBFh478b78dwHbiJt5jPEQLrdedAWsiXXLKCYZBAxAwEpyQOTES7t84Vt9b2T4XIKCZAQuMZC58v3edIHN21N1S1HDgr3ZC3yKvicqAJga3HksYNwqaZB13ZCCcC19egH8x1FDuD5dJCJvI9sImuwrAZDZD"
 
-function checkExistingUser(senderID, text, context) {
+function checkExistingUser(senderID, text) {
 	const results = [];
 	 var returnLength = 0
 	pg.connect(process.env.DATABASE_URL, function (err, client, done) {
@@ -81,7 +80,8 @@ function checkExistingUser(senderID, text, context) {
 
 			if(result.rows.length > 0)
 			{
-				sendMessageToWatson(text, senderID, context)
+				sendGenericMessage(senderID)
+				sendMessageToWatson(text, senderID)
 				//sendTextMessage(senderID, "Text received, echo: " + text.substring(0, 200))
 			} else {
 				addNewUser(senderID, text)
@@ -105,7 +105,7 @@ function addNewUser(senderID, text) {
 	})
 }
 
-function sendMessageToWatson(messengerText, senderID, context) {
+function sendMessageToWatson(messengerText, senderID) {
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (messengerText) {
 		var payload = {
@@ -275,7 +275,56 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-// spin spin sugar
+function sendGenericMessage(sender) {
+	let messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "generic",
+				"elements": [{
+					"title": "First card",
+					"subtitle": "Element #1 of an hscroll",
+					"image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+					"buttons": [{
+						"type": "web_url",
+						"url": "https://www.messenger.com",
+						"title": "web url"
+					}, {
+						"type": "postback",
+						"title": "Postback",
+						"payload": "Payload for first element in a generic bubble",
+					}],
+				}, {
+					"title": "Second card",
+					"subtitle": "Element #2 of an hscroll",
+					"image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
+					"buttons": [{
+						"type": "postback",
+						"title": "Postback",
+						"payload": "Payload for second element in a generic bubble",
+					}],
+				}]
+			}
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
+
+
 app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'))
 })
