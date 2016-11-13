@@ -441,66 +441,60 @@ function sendTextMessage(sender, text) {
 
 function buildRecipeMessageRespose(senderID, possibleRecipeArray) {
 
-  var recipiesToSend = []
-  var numSend = possibleRecipeArray.length
+  if(possibleRecipeArray.length == 0) {
+    sendTextMessage(senderID, "Sorry, you do not have the right ingredients for that.")
+  } else {
+    var recipiesToSend = []
+    var numSend = possibleRecipeArray.length
 
-  if(numSend > 3){
-    numSend = 3
-  }
-
-  for(var i=0; i<numSend; i++) {
-    var builtRecipe = {
-      "title": possibleRecipeArray[i].title,
-      "subtitle": possibleRecipeArray[i].publisher,
-      "image_url": possibleRecipeArray[i].image_url,
-      "buttons": [{
-        "type": "web_url",
-        "url": possibleRecipeArray[i].source_url,
-        "title": "Link To Recipe"
-      }],
+    if(numSend > 3){
+      numSend = 3
     }
-    recipiesToSend.push(builtRecipe)
+
+    for(var i=0; i<numSend; i++) {
+      var builtRecipe = {
+        "title": possibleRecipeArray[i].title,
+        "subtitle": possibleRecipeArray[i].publisher,
+        "image_url": possibleRecipeArray[i].image_url,
+        "buttons": [{
+          "type": "web_url",
+          "url": possibleRecipeArray[i].source_url,
+          "title": "Link To Recipe"
+        }],
+      }
+      recipiesToSend.push(builtRecipe)
+    }
+
+    console.log(recipiesToSend)
+
+    var messageData = {
+  		"attachment": {
+  			"type": "template",
+  			"payload": {
+  				"template_type": "generic",
+  				"elements": recipiesToSend,
+  			}
+  		}
+  	}
+
+  	request({
+  		url: 'https://graph.facebook.com/v2.6/me/messages',
+  		qs: {access_token:token},
+  		method: 'POST',
+  		json: {
+  			recipient: {id:senderID},
+  			message: messageData,
+  		}
+  	}, function(error, response, body) {
+  		if (error) {
+  			console.log('Error sending messages: ', error)
+  		} else if (response.body.error) {
+  			console.log('Error: ', response.body.error)
+  		}
+  	})
   }
-
-  console.log(recipiesToSend)
-
-  var messageData = {
-		"attachment": {
-			"type": "template",
-			"payload": {
-				"template_type": "generic",
-				"elements": recipiesToSend,
-			}
-		}
-	}
-
-	request({
-		url: 'https://graph.facebook.com/v2.6/me/messages',
-		qs: {access_token:token},
-		method: 'POST',
-		json: {
-			recipient: {id:senderID},
-			message: messageData,
-		}
-	}, function(error, response, body) {
-		if (error) {
-			console.log('Error sending messages: ', error)
-		} else if (response.body.error) {
-			console.log('Error: ', response.body.error)
-		}
-	})
 }
-/*
-{
-  "title": "First card",
-  "subtitle": "Element #1 of an hscroll",
-  "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-  "buttons": [{
-    "type": "web_url",
-    "url": "https://www.messenger.com",
-    "title": "web url"
-  }
-*/
+
 app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'))
 })
