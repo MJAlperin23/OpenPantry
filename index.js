@@ -245,6 +245,17 @@ function determineNext(senderID, data) {
 
       console.log(runout);
     }
+
+    else if (data.intents[i].intent === 'do_I_have') {
+      let checking = [];
+      for (var i = 0; i < data.entities.length; i++) {  
+        if (data.entities[i].entity === 'ingredients'){
+          checking.push(data.entities[i].value.toLowerCase());
+        }
+      }
+
+      console.log(checking);
+    }
   }
 }
 
