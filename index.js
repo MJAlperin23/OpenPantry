@@ -166,7 +166,7 @@ function determineNext(senderID, data) {
             console.log(recipe.recipe.ingredients);
               let recipe_ingred = recipe.recipe.ingredients.toString();
               console.log(recipe_ingred);
-              sendMessageToWatson(recipe.recipe.ingredients, senderID);
+              sendMessageToWatson(recipe.recipe.ingredients[0], senderID);
           })
       })
     }
