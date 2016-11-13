@@ -149,7 +149,8 @@ function sendMessageToWatsonInternal(messengerText, senderID) {
 		payload.input = textDict;
 
     console.log("look here" + payload.input.text);
-    console.log("look here" + payload.input.toString());
+    console.log(typeof(payload.input));
+    console.log(typeof(payload.input.text));
 
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
