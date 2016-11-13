@@ -23,7 +23,7 @@ var conversation = watson.conversation( {
   version: 'v1'
 } );
 
-
+let internal_search = false;
 
 /***** FUNCTIONS AND ENDPOINTS  *****/
 app.set('port', (process.env.PORT || 5000))
@@ -132,16 +132,53 @@ function sendMessageToWatson(messengerText, senderID) {
   }
 }
 
+function sendMessageToWatsonInternal(messengerText, senderID) {
+  console.log(messengerText);
+  let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
+  if (messengerText) {
+		var payload = {
+	    workspace_id: workspace,
+	    context: {},//context,
+	    input: {}//text.substring(0,200)
+	  };
+
+		var textDict = {
+			text: messengerText
+		};
+
+		payload.input = textDict;
+
+	  // Send the input to the conversation service
+	  conversation.message( payload, function(err, data) {
+	    if ( err ) {
+	      console.log("error talking to watson")
+				console.log(err)
+	    }
+	    getWatsonResponseInternal(senderID, data);
+	  } );
+  }
+}
+
 function getWatsonResponse(senderID, data) {
 	var botResponse = data.output.text[0]
   determineNext(senderID, data)
 	sendTextMessage(senderID, botResponse)
+
+}
+
+function getWatsonResponseInternal(senderID, data) {
+	var botResponse = data.output.text[0]
+  console.log(data);
+	// sendTextMessage(senderID, botResponse)
 }
 
 function determineNext(senderID, data) {
-  for (var i = 0; i < data.intents.length; i++) {  
-    // console.log(data.intents[i].intent);  
-    if (data.intents[i].intent === 'Meals_to_make') {
+  for (var i = 0; i < data.intents.length; i++) {
+    console.log(data);
+    console.log(data.intents[i].intent);
+    if (data.intents[i].intent === 'Meals_to_make' && !internal_search) {
+      internal_search = true
+
 
       let tot = [];
       let cuisine  = "";
@@ -165,11 +202,20 @@ function determineNext(senderID, data) {
             console.log(recipe.recipe.ingredients);
               let recipe_ingred = recipe.recipe.ingredients.toString();
               console.log(recipe_ingred);
-              sendMessageToWatson(recipe.recipe.ingredients[0], senderID);
+
+              let recipe_String = ''
+              for (var i = 0; i < recipe.recipe.ingredients.length; i++) {
+                recipe_String += recipe.recipe.ingredients.length[i] + ' '
+              }
+
+              console.log(recipe_String);
+
+              sendMessageToWatsonInternal(recipe.recipe.ingredients.toString(), senderID);
           })
       })
     }
     else {
+      internal_search = false;
       let ingred = [];
       for (var i = 0; i < data.entities.length; i++) {  
         if (data.entities[i].entity === 'ingredients'){
