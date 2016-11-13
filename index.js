@@ -247,7 +247,12 @@ function determineNext(senderID, data) {
         } else if(result.rows.length > 0) {
           responseMessage = "You have these items: "
           for(var i = 0; i<result.rows.length; i++) {
-            responseMessage += result.rows[i].item_name + ","
+            if (i === itemsToCheck.length - 1) {
+              responseMessage += result.rows[i].item_name
+            }
+            else {
+              responseMessage += result.rows[i].item_name + ","
+            }
           }
         }
         sendTextMessage(senderID, responseMessage)
