@@ -48,7 +48,6 @@ app.get('/webhook/', function (req, res) {
 
 // to post data
 app.post('/webhook/', function (req, res) {
-	console.log(req.body.input)
 	let messaging_events = req.body.entry[0].messaging
 	for (let i = 0; i < messaging_events.length; i++) {
 		let event = req.body.entry[0].messaging[i]
@@ -71,13 +70,14 @@ function sendMessageToWatson(text, senderID, context) {
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
 	console.log(text)
   if (text) {
+
 		var payload = {
 	    workspace_id: workspace,
 	    context: {},//context,
 	    input: {}//text.substring(0,200)
 	  };
 
-		payload.input = "hello";
+		payload.input = '{\"text\":\"' + text + '\"}';
 
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
