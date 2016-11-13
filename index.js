@@ -106,6 +106,7 @@ function addNewUser(senderID, text) {
 }
 
 function sendMessageToWatson(messengerText, senderID) {
+  console.log(messengerText);
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (messengerText) {
 		var payload = {
@@ -162,7 +163,7 @@ function determineNext(senderID, data) {
           getRecipe(senderID, data.recipes[0].recipe_id, function(recipe) {
               let recipe_ingred = recipe.recipe.ingredients.toString();
               console.log(recipe_ingred);
-              sendMessageToWatson(recipe.recipe.ingredients.toString(), senderID);
+              sendMessageToWatson("hello", senderID);
           })
       })
     }
