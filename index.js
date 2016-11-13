@@ -254,11 +254,10 @@ function determineNext(senderID, data) {
         } else if(result.rows.length > 0) {
           responseMessage = "You have these items: "
           for(var i = 0; i<result.rows.length; i++) {
-            responseMessage += result.rows[i].value + ","
+            responseMessage += result.rows[i].item_name + ","
           }
         }
-        console.log(result.rows[0])
-        //sendTextMessage(senderID, responseMessage)
+        sendTextMessage(senderID, responseMessage)
       })
     }
   }
