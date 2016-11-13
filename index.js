@@ -218,7 +218,7 @@ function determineNext(senderID, data) {
 
               console.log(recipe_String);
 
-              sendMessageToWatsonInternal(recipe_String, senderID);
+              sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID);
           })
       })
     }
