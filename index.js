@@ -243,7 +243,7 @@ function getPossibleRecipies(senderID, data) {
 
   var possibleRecipeArray = []
 
-  for(var i=0; i<5/*data.recipes.length*/; i++ ) {
+  for(var i=0; i<data.recipes.length; i++ ) {
     getRecipe(senderID, data.recipes[i].recipe_id, function(recipe) {
     //  console.log(recipe);
       //console.log(recipe.recipe.ingredients);
