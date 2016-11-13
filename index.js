@@ -259,6 +259,7 @@ function determineNext(senderID, data) {
 
   }
 }
+}
 
 function getRecipe(senderID, id, callback) {
     return http.get({
