@@ -405,7 +405,7 @@ function deleteItems(senderID, itemArray) {
 		}
 
 		for(var i = 0; i < itemArray.length; i++) {
-			client.query('DELETE FROM pantryitems WHERE item_name like $1;', [itemArray[i]], function (err, result) {
+			client.query('DELETE FROM pantryitems WHERE user_id = $1 AND item_name like $2;', [senderID, itemArray[i]], function (err, result) {
 				done()
 				if (err) {
 					return console.error('error happened during query', err)
@@ -422,7 +422,8 @@ function checkPantryForRecipe(senderID, itemList, numItems, arrayLoc, callback) 
 			return console.error('error fetching client from pool', err)
 		}
 
-			client.query('SELECT item_name FROM pantryitems WHERE item_name IN ' + itemList + ';', function (err, result) {
+			client.query('SELECT item_name FROM pantryitems WHERE user_id = $1 AND item_name IN ' + itemList
+                    + 'AND item_name NOT IN (SELECT item_name FROM allergyitems WHERE user_id = $1);', [senderID], function (err, result) {
 				done()
 				if (err) {
 					return console.error('error happened during query', err)
@@ -443,7 +444,7 @@ function checkItemsInPantry(senderID, itemList, callback) {
       return console.error('error fetching client from pool', err)
     }
 
-      client.query('SELECT item_name FROM pantryitems WHERE item_name IN ' + itemList + ';', function (err, result) {
+      client.query('SELECT item_name FROM pantryitems WHERE user_id = $1 AND item_name IN ' + itemList + ';', [senderID], function (err, result) {
         done()
         if (err) {
           return console.error('error happened during query', err)
