@@ -236,11 +236,11 @@ function determineNext(senderID, data) {
   }
 }
 
-function getPossibleRecipies() {
+function getPossibleRecipies(senderID, data) {
 
   var possibleRecipeArray = []
 
-  for(var i=0; i<data.recipes.length; i++ ) {
+  for(var i=0; i<5/*data.recipes.length*/; i++ ) {
     getRecipe(senderID, data.recipes[i].recipe_id, function(recipe) {
     //  console.log(recipe);
       //console.log(recipe.recipe.ingredients);
@@ -255,7 +255,9 @@ function getPossibleRecipies() {
 
         sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID, function(isPossible) {
             if(isPossible) {
-              possibleRecipeArray.push(data.recipes[i])
+              console.log(data.recipes[i])
+              //sendTextMessage(data.recipes[i].)
+              //possibleRecipeArray.push(data.recipes[i])
             }
         });
     })
