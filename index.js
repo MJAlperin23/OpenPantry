@@ -191,7 +191,7 @@ function getWatsonResponseInternal(senderID, data) {
 function determineNext(senderID, data) {
   for (var i = 0; i < data.intents.length; i++) {
     console.log(data);
-    console.log(data.intents[i].intent);
+    // console.log(data.intents[i].intent);
     if (data.intents[i].intent === 'Meals_to_make') {
 
       let tot = [];
@@ -248,6 +248,15 @@ function determineNext(senderID, data) {
 
       // console.log(mic);
     }
+    else if (data.intents[i].intent === 'I_dont_have') {
+      let runout = [];
+      for (var i = 0; i < data.entities.length; i++) {  
+        if (data.entities[i].entity === 'ingredients'){
+          runout.push(data.entities[i].value.toLowerCase());
+        }
+      }
+      console.log(runout);
+
   }
 }
 
