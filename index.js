@@ -162,16 +162,17 @@ function getWatsonResponseInternal(senderID, data) {
   let ingredientsInRecipe = '(';
   for (var i = 0; i < ingred.length; i++) {  
     if (i === ingred.length - 1) {
-      ingredientsInRecipe += "'" + ingred[i] + "'"
+      ingredientsInRecipe += "\'" + ingred[i] + "\'"
     }
     else {
-      ingredientsInRecipe += "'" + ingred[i] + "',"
+      ingredientsInRecipe += "\'" + ingred[i] + "\',"
     }
   }
   ingredientsInRecipe += ")"
 
   console.log(ingredientsInRecipe);
-  checkPantryForRecipe(senderID, ingredientsInRecipe);
+  //console.log(ingredientsInRecipe);
+  checkPantryForRecipe(senderID, ingredientsInRecipe)
 
 }
 
@@ -350,8 +351,8 @@ function checkPantryForRecipe(senderID, itemList) {
 		if (err) {
 			return console.error('error fetching client from pool', err)
 		}
-      console.log('SELECT item_name FROM pantryitems WHERE item_name IN $1;', [itemList])
-			client.query('SELECT item_name FROM pantryitems WHERE item_name IN $1;', [itemList], function (err, result) {
+      console.log('SELECT item_name FROM pantryitems WHERE item_name IN '+ itemList + ';')
+			client.query('SELECT item_name FROM pantryitems WHERE item_name IN ' + itemList + ';', function (err, result) {
 				done()
 				if (err) {
 					return console.error('error happened during query', err)
