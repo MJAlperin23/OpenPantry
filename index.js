@@ -90,7 +90,7 @@ function checkExistingUser(senderID, text) {
 }
 
 function sendMessageToWatson(messengerText, senderID) {
-  console.log(messengerText);
+//  console.log(messengerText);
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (messengerText) {
 		var payload = {
@@ -117,7 +117,7 @@ function sendMessageToWatson(messengerText, senderID) {
 }
 
 function sendMessageToWatsonInternal(messengerText, senderID) {
-  console.log(messengerText);
+  //console.log(messengerText);
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (messengerText) {
 		var payload = {
@@ -151,7 +151,7 @@ function getWatsonResponse(senderID, data) {
 }
 
 function getWatsonResponseInternal(senderID, data) {
-  console.log(data);
+  //console.log(data);
   let ingred = [];
   for (var i = 0; i < data.entities.length; i++) {  
     if (data.entities[i].entity === 'ingredients'){
@@ -170,14 +170,14 @@ function getWatsonResponseInternal(senderID, data) {
   }
   ingredientsInRecipe += ")"
 
-  console.log(ingredientsInRecipe);
+  //console.log(ingredientsInRecipe);
   checkPantryForRecipe(senderID, ingredientsInRecipe)
 
 }
 
 function determineNext(senderID, data) {
   for (var i = 0; i < data.intents.length; i++) {
-    console.log(data);
+    //console.log(data);
     // console.log(data.intents[i].intent);
     if (data.intents[i].intent === 'Meals_to_make') {
 
@@ -197,10 +197,10 @@ function determineNext(senderID, data) {
 
       search(senderID, tot.toString(), function(data) {
           getRecipe(senderID, data.recipes[0].recipe_id, function(recipe) {
-            console.log(recipe);
-            console.log(recipe.recipe.ingredients);
+          //  console.log(recipe);
+            //console.log(recipe.recipe.ingredients);
               let recipe_ingred = recipe.recipe.ingredients.toString();
-              console.log(recipe_ingred);
+            //  console.log(recipe_ingred);
 
               let recipe_String = ''
               for (var i = 0; i < recipe.recipe.ingredients.length; i++) {
@@ -220,7 +220,7 @@ function determineNext(senderID, data) {
         }
       }
 
-      console.log(purchased);
+      //console.log(purchased);
       insertNewItems(senderID, purchased)
     }
     else if (data.intents[i].intent === 'I_dont_have') {
@@ -231,7 +231,7 @@ function determineNext(senderID, data) {
         }
       }
 
-      console.log(runout);
+    //  console.log(runout);
       deleteItems(senderID, runout)
     }
 
@@ -244,7 +244,7 @@ function determineNext(senderID, data) {
       }
 
       //MICKEY: the array of ingredients to check if they're in the pantry is checking
-      console.log(checking);
+    //  console.log(checking);
     }
   }
 }
@@ -272,7 +272,6 @@ function getRecipe(senderID, id, callback) {
 
 function search(senderID, searchterms, callback) {
     //http.get('http://eternagame.wikia.com/wiki/EteRNA_Dictionary', callback);
-    console.log(callback);
 
     return http.get({
 		host: 'food2fork.com',
