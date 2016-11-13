@@ -234,19 +234,17 @@ function determineNext(senderID, data) {
       }
 
       console.log(purchased);
-
-      // let mic = '(';
-      // for (var i = 0; i < purchased.length; i++) {  
-      //   if (i === purchased.length - 1) {
-      //     mic += "\'" + purchased[i] + "\'"
-      //   }
-      //   else {
-      //     mic += "\'" + purchased[i] + "\',"
+    }
+    else if (data.intents[i].intent === 'I_dont_have') {
+      console.log("in i dont have");
+      // let purchased = [];
+      // for (var i = 0; i < data.entities.length; i++) {  
+      //   if (data.entities[i].entity === 'ingredients'){
+      //     purchased.push(data.entities[i].value.toLowerCase());
       //   }
       // }
-      // mic += ")"
 
-      // console.log(mic);
+      // console.log(purchased);
     }
   }
 }
