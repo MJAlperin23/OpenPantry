@@ -90,7 +90,6 @@ function checkExistingUser(senderID, text) {
 }
 
 function sendMessageToWatson(messengerText, senderID) {
-//  console.log(messengerText);
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (messengerText) {
 		var payload = {
@@ -117,7 +116,6 @@ function sendMessageToWatson(messengerText, senderID) {
 }
 
 function sendMessageToWatsonInternal(messengerText, senderID, callback) {
-  //console.log(messengerText);
   let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
   if (messengerText) {
 		var payload = {
@@ -150,7 +148,6 @@ function getWatsonResponse(senderID, data) {
 }
 
 function getWatsonResponseInternal(senderID, data, callback) {
-  //console.log(data);
   var numIngredients = 0
   let ingred = [];
   for (var i = 0; i < data.entities.length; i++) {  
@@ -172,16 +169,12 @@ function getWatsonResponseInternal(senderID, data, callback) {
   }
   ingredientsInRecipe += ")"
 
-  console.log(ingredientsInRecipe);
-
   checkPantryForRecipe(senderID, ingredientsInRecipe, numIngredients, callback)
 
 }
 
 function determineNext(senderID, data) {
   for (var i = 0; i < data.intents.length; i++) {
-    //console.log(data);
-    // console.log(data.intents[i].intent);
     if (data.intents[i].intent === 'Meals_to_make') {
 
       let tot = [];
@@ -212,7 +205,6 @@ function determineNext(senderID, data) {
         }
       }
 
-      //console.log(purchased);
       insertNewItems(senderID, purchased)
     }
     else if (data.intents[i].intent === 'I_dont_have') {
@@ -223,7 +215,6 @@ function determineNext(senderID, data) {
         }
       }
 
-    //  console.log(runout);
       deleteItems(senderID, runout)
     }
 
@@ -268,13 +259,10 @@ function determineNext(senderID, data) {
 function getPossibleRecipies(senderID, data, callback) {
 
   var possibleRecipeArray = []
-
-  for(var i=0; i< 3; i++ ) {  //recipes.length
+  var length = 3 //recipes.length
+  for(var i=0; i< length; i++ ) {
     getRecipe(senderID, data.recipes[i].recipe_id, function(recipe) {
-    //  console.log(recipe);
-      //console.log(recipe.recipe.ingredients);
         let recipe_ingred = recipe.recipe.ingredients.toString();
-      //  console.log(recipe_ingred);
 
         let recipe_String = ''
         for (var i = 0; i < recipe.recipe.ingredients.length; i++) {
@@ -287,11 +275,13 @@ function getPossibleRecipies(senderID, data, callback) {
               console.log(data.recipes[i])
               possibleRecipeArray.push(data.recipes[i])
             }
+
+            if(i == (length - 1){
+              callback(possibleRecipeArray)
+            }
         });
     })
   }
-
-   callback(possibleRecipeArray)
 }
 
 function getRecipe(senderID, id, callback) {
