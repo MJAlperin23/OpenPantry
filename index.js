@@ -260,14 +260,11 @@ function determineNext(senderID, data) {
         } else if(result.rows.length > 0) {
           responseMessage = "You have "
           for(var i = 0; i<result.rows.length; i++) {
-            if (i === itemsToCheck.length - 1) {
-              responseMessage += result.rows[i].item_name
-            }
-            else {
-              responseMessage += result.rows[i].item_name + ", "
-            }
+            responseMessage += result.rows[i].item_name + ", "
           }
         }
+        responseMessage.trim();
+        responseMessage.trim(',');
         sendTextMessage(senderID, responseMessage)
       })
     }
