@@ -117,9 +117,11 @@ function sendMessageToWatson(messengerText, senderID) {
 }
 
 function getWatsonResponse(senderID, data) {
-	var botResponse = data.output.text[0]
-  determineNext(senderID, data)
-	sendTextMessage(senderID, botResponse)
+  if(data) {
+    var botResponse = data.output.text[0]
+    determineNext(senderID, data)
+  	sendTextMessage(senderID, botResponse)
+  }
 }
 
 function sendMessageToWatsonInternal(messengerText, senderID, arrayLoc, callback) {
