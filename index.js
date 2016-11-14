@@ -288,7 +288,7 @@ function getPossibleRecipies(senderID, data, callback) {
 
   var possibleRecipeArray = []
   var respCounter = 0
-  var length = 10 //recipes.length
+  var length = 5 //recipes.length
   for(var rec=0; rec< length; rec++ ) {
 
     getRecipe(senderID, data.recipes[rec].recipe_id, rec, function(recipe, recpLoc) {
