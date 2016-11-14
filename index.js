@@ -153,27 +153,28 @@ function sendMessageToWatsonInternal(messengerText, senderID, arrayLoc, callback
 function getWatsonResponseInternal(senderID, data, arrayLoc, callback) {
   var numIngredients = 0
   let ingred = [];
-  for (var i = 0; i < data.entities.length; i++) {  
-    if (data.entities[i].entity === 'ingredients'){
-      ingred.push(data.entities[i].value.toLowerCase());
+  if(data) {
+    for (var i = 0; i < data.entities.length; i++) {  
+      if (data.entities[i].entity === 'ingredients'){
+        ingred.push(data.entities[i].value.toLowerCase());
+      }
     }
+
+    numIngredients = ingred.length;
+
+    let ingredientsInRecipe = '(';
+    for (var i = 0; i < ingred.length; i++) {  
+      if (i === ingred.length - 1) {
+        ingredientsInRecipe += "\'" + ingred[i] + "\'"
+      }
+      else {
+        ingredientsInRecipe += "\'" + ingred[i] + "\',"
+      }
+    }
+    ingredientsInRecipe += ")"
+
+    checkPantryForRecipe(senderID, ingredientsInRecipe, numIngredients, arrayLoc, callback)
   }
-
-  numIngredients = ingred.length;
-
-  let ingredientsInRecipe = '(';
-  for (var i = 0; i < ingred.length; i++) {  
-    if (i === ingred.length - 1) {
-      ingredientsInRecipe += "\'" + ingred[i] + "\'"
-    }
-    else {
-      ingredientsInRecipe += "\'" + ingred[i] + "\',"
-    }
-  }
-  ingredientsInRecipe += ")"
-
-  checkPantryForRecipe(senderID, ingredientsInRecipe, numIngredients, arrayLoc, callback)
-
 }
 
 function determineNext(senderID, data) {
