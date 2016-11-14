@@ -301,6 +301,9 @@ function getPossibleRecipies(senderID, data, callback) {
           recipe_String += ' '
         }
 
+        console.log(recipe_String);
+        console.log(recipe_String.toString());
+
         sendMessageToWatsonInternal(recipe_String, senderID, recpLoc, function(isPossible, arrayLoc) {
             respCounter++;
             if(isPossible) {
