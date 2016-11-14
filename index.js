@@ -195,6 +195,8 @@ function determineNext(senderID, data) {
         }
       }
 
+      tot = tot.replace(/,/g , "");
+
       console.log("string being sent to api: " + tot.toString());
 
       search(senderID, tot.toString(), function(data) {
