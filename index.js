@@ -382,8 +382,8 @@ function insertNewItems(senderID, itemArray) {
 		}
 
 		for(var i = 0; i < itemArray.length; i++) {
-			client.query('IF NOT EXISTS (SELECT user_id, item_name FROM pantryitems WHERE user_id = $1 AND item_name = $2) '
-              + 'INSERT INTO pantryitems (user_id, item_name) VALUES ($1, $2);', [senderID, itemArray[i]], function (err, result) {
+			client.query('INSERT INTO pantryitems (user_id, item_name) SELECT $1, $2'
+              + ' WHERE NOT EXISTS (SELECT 1 FROM pantryitems WHERE user_id = $1 AND item_name LIKE $2);', [senderID, itemArray[i]], function (err, result) {
 				done()
 				if (err) {
 					return console.error('error happened during query', err)
