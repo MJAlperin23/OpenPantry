@@ -195,11 +195,11 @@ function determineNext(senderID, data) {
         }
       }
 
-      tot = tot.replace(/,/g , "");
+      // totString = tot.toString().replace(/,/g , "");
 
-      console.log("string being sent to api: " + tot.toString());
+      console.log("string being sent to api: " + tot.toString().replace(/,/g , ""));
 
-      search(senderID, tot.toString(), function(data) {
+      search(senderID, tot.toString().replace(/,/g , ""), function(data) {
         getPossibleRecipies(senderID, data, function(possibleRecipeArray){
           buildRecipeMessageRespose(senderID, possibleRecipeArray)
         })
