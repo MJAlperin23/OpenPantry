@@ -194,6 +194,8 @@ function determineNext(senderID, data) {
         }
       }
 
+      console.log("string being sent to api: " + tot.toString());
+
       search(senderID, tot.toString(), function(data) {
         getPossibleRecipies(senderID, data, function(possibleRecipeArray){
           buildRecipeMessageRespose(senderID, possibleRecipeArray)
