@@ -5,8 +5,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
-const http = require('http');
-//const cfenv = require("cfenv");
+const http = require('http')
+
 const pg = require('pg')
 const watson = require('watson-developer-cloud');
 const extend = require('util')._extend;
@@ -28,7 +28,8 @@ app.set('port', (process.env.PORT || 5000))
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}))
-
+app.use(express.static('dist'));
+app.use(express.static('public'));
 // parse application/json
 app.use(bodyParser.json())
 
@@ -349,7 +350,7 @@ function addNewUser(senderID, text) {
 	    if (err) {
 	      return console.error('error happened during query', err)
 	    }
-			sendTextMessage(senderID, "Welcome to OpenPantry. Your Account Has been Created!")
+			sendTextMessage(senderID, "Welcome to OpenPantry. Your Account Has been Created! \n Click the link below to check out some examples. \n https://openpantry.herokuapp.com/")
 	  })
 	})
 }
