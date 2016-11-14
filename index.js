@@ -181,29 +181,26 @@ function determineNext(senderID, data) {
   for (var i = 0; i < data.intents.length; i++) {
     if (data.intents[i].intent === 'Meals_to_make') {
 
-      let tot = "";
+      let tot = [];
       let cuisine  = "";
       let ingred = [];
       for (var i = 0; i < data.entities.length; i++) {  
         if (data.entities[i].entity === 'cuisine') {
             cuisine = data.entities[i].value.toLowerCase();
-            tot += data.entities[i].value.toLowerCase() + ' '
-            // tot.push(data.entities[i].value.toLowerCase())
+            tot.push(data.entities[i].value.toLowerCase())
         }
         else if (data.entities[i].entity === 'ingredients'){
           ingred.push(data.entities[i].value.toLowerCase());
-          tot += data.entities[i].value.toLowerCase() + ' '
-          // tot.push(data.entities[i].value.toLowerCase());
+          tot.push(data.entities[i].value.toLowerCase());
         }
       }
 
+      totString = tot.toString().replace(/,/g , "");
+      console.log(totString);
 
+      console.log("string being sent to api: " + tot.toString());
 
-      // totString = tot.toString().replace(/,/g , "");
-
-      console.log("string being sent to api: " + tot);
-
-      search(senderID, tot, function(data) {
+      search(senderID, tot.toString(), function(data) {
         getPossibleRecipies(senderID, data, function(possibleRecipeArray){
           buildRecipeMessageRespose(senderID, possibleRecipeArray)
         })
