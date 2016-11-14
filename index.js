@@ -91,7 +91,7 @@ function checkExistingUser(senderID, text) {
 }
 
 function sendMessageToWatson(messengerText, senderID) {
-  let workspace = '105ea271-74d3-414d-8733-69a4112964fe'
+  let workspace = '2e91f30c-45c1-4c24-9898-4e0ad80d7ac2'
   if (messengerText) {
 		var payload = {
 	    workspace_id: workspace,
