@@ -197,7 +197,9 @@ function determineNext(senderID, data) {
         }
       }
 
-      console.log(tot);
+      tot = tot.replace(/\s/g, "%20")
+
+      // console.log(tot.replace(/\s/g, "%20"));
       // totString = tot.toString().replace(/,/g , "");
       // console.log(totString);
 
