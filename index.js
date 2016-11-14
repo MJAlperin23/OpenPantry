@@ -108,7 +108,7 @@ function sendMessageToWatson(messengerText, senderID) {
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
 	    if ( err ) {
-	      console.log("error talking to watson")
+	      console.log("error talking to watson1")
 				console.log(err)
 	    }
 	    getWatsonResponse(senderID, data);
@@ -142,7 +142,7 @@ function sendMessageToWatsonInternal(messengerText, senderID, arrayLoc, callback
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
 	    if ( err ) {
-	      console.log("error talking to watson")
+	      console.log("error talking to watson2")
 				console.log(err)
 	    }
 	    getWatsonResponseInternal(senderID, data, arrayLoc, callback);
@@ -197,11 +197,12 @@ function determineNext(senderID, data) {
         }
       }
 
-      console.log(tot);
+      tot = tot.replace(/\s/g, "%20")
+      // console.log(tot);
       // totString = tot.toString().replace(/,/g , "");
       // console.log(totString);
 
-      console.log("string being sent to api: " + tot);
+      // console.log("string being sent to api: " + tot);
 
       search(senderID, tot, function(data) {
         getPossibleRecipies(senderID, data, function(possibleRecipeArray){
@@ -287,7 +288,7 @@ function getPossibleRecipies(senderID, data, callback) {
 
   var possibleRecipeArray = []
   var respCounter = 0
-  var length = 3 //recipes.length
+  var length = 5 //recipes.length
   for(var rec=0; rec< length; rec++ ) {
 
     getRecipe(senderID, data.recipes[rec].recipe_id, rec, function(recipe, recpLoc) {
