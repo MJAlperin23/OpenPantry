@@ -198,7 +198,7 @@ function determineNext(senderID, data) {
       }
 
       tot = tot.replace(/\s/g, "%20")
-      console.log(tot);
+      // console.log(tot);
       // totString = tot.toString().replace(/,/g , "");
       // console.log(totString);
 
@@ -292,7 +292,7 @@ function getPossibleRecipies(senderID, data, callback) {
   for(var rec=0; rec< length; rec++ ) {
 
     getRecipe(senderID, data.recipes[rec].recipe_id, rec, function(recipe, recpLoc) {
-        console.log(recipe.recipe);
+        // console.log(recipe.recipe);
         let recipe_ingred = recipe.recipe.ingredients.toString();
 
         let recipe_String = ''
