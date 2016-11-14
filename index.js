@@ -262,8 +262,9 @@ function determineNext(senderID, data) {
           for(var i = 0; i<result.rows.length; i++) {
             responseMessage += result.rows[i].item_name + ", "
           }
+          responseMessage = responseMessage.substring(0, responseMessage.length - 2)
+          responseMessage += "."
         }
-        responseMessage = responseMessage.substring(0, responseMessage.length - 2)
         sendTextMessage(senderID, responseMessage)
       })
     }

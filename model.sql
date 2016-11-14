@@ -8,13 +8,13 @@ CREATE TABLE MessengerUsers (
 CREATE TABLE PantryItems (
   id serial PRIMARY KEY,
   user_id bigint REFERENCES messengerusers(id),
-  item_name VARCHAR(60) UNIQUE
+  item_name VARCHAR(60)
 );
 
 CREATE TABLE AllergyItems (
   id serial PRIMARY KEY,
   user_id bigint REFERENCES messengerusers(id),
-  item_name VARCHAR(60) UNIQUE
+  item_name VARCHAR(60)
 );
 
 
