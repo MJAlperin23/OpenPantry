@@ -108,7 +108,7 @@ function sendMessageToWatson(messengerText, senderID) {
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
 	    if ( err ) {
-	      console.log("error talking to watson")
+	      console.log("error talking to watson1")
 				console.log(err)
 	    }
 	    getWatsonResponse(senderID, data);
@@ -142,7 +142,7 @@ function sendMessageToWatsonInternal(messengerText, senderID, arrayLoc, callback
 	  // Send the input to the conversation service
 	  conversation.message( payload, function(err, data) {
 	    if ( err ) {
-	      console.log("error talking to watson")
+	      console.log("error talking to watson2")
 				console.log(err)
 	    }
 	    getWatsonResponseInternal(senderID, data, arrayLoc, callback);
