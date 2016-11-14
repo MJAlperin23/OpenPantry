@@ -197,9 +197,7 @@ function determineNext(senderID, data) {
         }
       }
 
-      tot = tot.replace(/\s/g, "%20")
-
-      // console.log(tot.replace(/\s/g, "%20"));
+      console.log(tot);
       // totString = tot.toString().replace(/,/g , "");
       // console.log(totString);
 
@@ -293,7 +291,7 @@ function getPossibleRecipies(senderID, data, callback) {
   for(var rec=0; rec< length; rec++ ) {
 
     getRecipe(senderID, data.recipes[rec].recipe_id, rec, function(recipe, recpLoc) {
-        console.log('make sure these ingredients are in your user: ' + recipe.recipe);
+        console.log(recipe.recipe);
         let recipe_ingred = recipe.recipe.ingredients.toString();
 
         let recipe_String = ''
@@ -382,8 +380,7 @@ function insertNewItems(senderID, itemArray) {
 		}
 
 		for(var i = 0; i < itemArray.length; i++) {
-			client.query('INSERT INTO pantryitems (user_id, item_name) SELECT $1, $2'
-              + ' WHERE NOT EXISTS (SELECT 1 FROM pantryitems WHERE user_id = $1 AND item_name = $2);', [senderID, itemArray[i]], function (err, result) {
+			client.query('INSERT INTO pantryitems (user_id, item_name) VALUES ($1, $2);', [senderID, itemArray[i]], function (err, result) {
 				done()
 				if (err) {
 					return console.error('error happened during query', err)
@@ -438,7 +435,7 @@ function checkPantryForRecipe(senderID, itemList, numItems, arrayLoc, callback) 
 			return console.error('error fetching client from pool', err)
 		}
 
-			client.query('SELECT item_name FROM pantryitems WHERE user_id = $1 AND item_name IN ' + itemList
+			client.query('SELECT DISTINCT item_name FROM pantryitems WHERE user_id = $1 AND item_name IN ' + itemList
                     + 'AND item_name NOT IN (SELECT item_name FROM allergyitems WHERE user_id = $1);', [senderID], function (err, result) {
 				done()
 				if (err) {
