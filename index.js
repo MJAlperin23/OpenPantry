@@ -125,7 +125,7 @@ function getWatsonResponse(senderID, data) {
 }
 
 function sendMessageToWatsonInternal(messengerText, senderID, arrayLoc, callback) {
-  let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
+  let workspace = '2e91f30c-45c1-4c24-9898-4e0ad80d7ac2'
   if (messengerText) {
 		var payload = {
 	    workspace_id: workspace,
