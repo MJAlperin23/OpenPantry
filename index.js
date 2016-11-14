@@ -301,7 +301,7 @@ function getPossibleRecipies(senderID, data, callback) {
           recipe_String += ' '
         }
 
-        sendMessageToWatsonInternal(recipe_String.replace(/\s/g, "%20"), senderID, recpLoc, function(isPossible, arrayLoc) {
+        sendMessageToWatsonInternal(recipe_String, senderID, recpLoc, function(isPossible, arrayLoc) {
             respCounter++;
             if(isPossible) {
               possibleRecipeArray.push(data.recipes[arrayLoc])
