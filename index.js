@@ -457,7 +457,7 @@ function checkItemsInPantry(senderID, itemList, callback) {
       return console.error('error fetching client from pool', err)
     }
 
-      client.query('SELECT item_name FROM pantryitems WHERE user_id = $1 AND item_name IN ' + itemList + ';', [senderID], function (err, result) {
+      client.query('SELECT DISTINCT item_name FROM pantryitems WHERE user_id = $1 AND item_name IN ' + itemList + ';', [senderID], function (err, result) {
         done()
         if (err) {
           return console.error('error happened during query', err)
