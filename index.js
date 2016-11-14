@@ -292,7 +292,6 @@ function getPossibleRecipies(senderID, data, callback) {
 
     getRecipe(senderID, data.recipes[rec].recipe_id, rec, function(recipe, recpLoc) {
         console.log(recipe.recipe);
-        console.log(recipe.recipe.ingredients);
         let recipe_ingred = recipe.recipe.ingredients.toString();
 
         let recipe_String = ''
