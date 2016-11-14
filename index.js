@@ -246,7 +246,7 @@ function determineNext(senderID, data) {
         {
           responseMessage = "You do not have any of those items."
         } else if(result.rows.length > 0) {
-          responseMessage = "You have these items: "
+          responseMessage = "You have "
           for(var i = 0; i<result.rows.length; i++) {
             if (i === itemsToCheck.length - 1) {
               responseMessage += result.rows[i].item_name
