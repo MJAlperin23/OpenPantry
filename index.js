@@ -17,8 +17,8 @@ const conString = 'postgres://Mickey:password@localhost:5432/open_pantry'
 /*****       WATSON STUFF      **********/
 var conversation = watson.conversation( {
   url: 'https://gateway.watsonplatform.net/conversation/api',
-  username: '3cd9b082-fe46-41ba-adad-fe59c3a5c70a',
-  password: 'CkGtDZAhAOdS',
+  username: '33253a14-1799-4760-a3e9-730ed6661ed5',
+  password: 'XSfZCg4wquKl',
   version_date: '2016-07-11',
   version: 'v1'
 } );
@@ -91,7 +91,7 @@ function checkExistingUser(senderID, text) {
 }
 
 function sendMessageToWatson(messengerText, senderID) {
-  let workspace = '3f05808d-946c-4286-83d3-686d9bdbdf09'
+  let workspace = '105ea271-74d3-414d-8733-69a4112964fe'
   if (messengerText) {
 		var payload = {
 	    workspace_id: workspace,
@@ -194,6 +194,8 @@ function determineNext(senderID, data) {
           tot.push(data.entities[i].value.toLowerCase());
         }
       }
+
+      console.log("string being sent to api: " + tot.toString());
 
       search(senderID, tot.toString(), function(data) {
         getPossibleRecipies(senderID, data, function(possibleRecipeArray){
