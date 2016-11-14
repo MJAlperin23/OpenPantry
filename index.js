@@ -263,7 +263,7 @@ function determineNext(senderID, data) {
             responseMessage += result.rows[i].item_name + ", "
           }
         }
-        responseMessage.substring(0, responseMessage.length - 10)
+        responseMessage = responseMessage.substring(0, responseMessage.length - 2)
         sendTextMessage(senderID, responseMessage)
       })
     }
