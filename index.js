@@ -198,11 +198,11 @@ function determineNext(senderID, data) {
       }
 
       tot = tot.replace(/\s/g, "%20")
-      console.log(tot);
+      // console.log(tot);
       // totString = tot.toString().replace(/,/g , "");
       // console.log(totString);
 
-      console.log("string being sent to api: " + tot);
+      // console.log("string being sent to api: " + tot);
 
       search(senderID, tot, function(data) {
         getPossibleRecipies(senderID, data, function(possibleRecipeArray){
