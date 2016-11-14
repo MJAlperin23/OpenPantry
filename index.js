@@ -264,7 +264,7 @@ function determineNext(senderID, data) {
               responseMessage += result.rows[i].item_name
             }
             else {
-              responseMessage += result.rows[i].item_name + ","
+              responseMessage += result.rows[i].item_name + ", "
             }
           }
         }
