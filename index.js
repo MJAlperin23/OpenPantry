@@ -288,7 +288,7 @@ function getPossibleRecipies(senderID, data, callback) {
 
   var possibleRecipeArray = []
   var respCounter = 0
-  var length = 3 //recipes.length
+  var length = 15 //recipes.length
   for(var rec=0; rec< length; rec++ ) {
 
     getRecipe(senderID, data.recipes[rec].recipe_id, rec, function(recipe, recpLoc) {
@@ -300,9 +300,6 @@ function getPossibleRecipies(senderID, data, callback) {
           recipe_String += recipe.recipe.ingredients[i].toString()
           recipe_String += ' '
         }
-
-        console.log(recipe_String);
-        console.log(recipe_String.toString());
 
         sendMessageToWatsonInternal(recipe_String.replace(/(\r\n|\n|\r)/gm,""), senderID, recpLoc, function(isPossible, arrayLoc) {
             respCounter++;
